@@ -1,5 +1,10 @@
 #pragma once
 
+#include <cassert>
+#include <iostream>
+
+#include "vec2.h"
+
 template <class T>
 class Vec2;
 

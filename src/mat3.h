@@ -1,4 +1,10 @@
 #pragma once
+#include <cassert>
+#include <cmath>
+#include <iostream>
+
+#include "mat2.h"
+#include "vec3.h"
 
 template <class T>
 class Vec3;

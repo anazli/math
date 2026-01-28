@@ -1,4 +1,19 @@
+#include "point3.h"
+
 #include "gtest/gtest.h"
+#include "vec3.h"
+
+void comparePoints(const Point3D& p1, const Point3D& p2) {
+  EXPECT_FLOAT_EQ(p1.x(), p2.x());
+  EXPECT_FLOAT_EQ(p1.y(), p2.y());
+  EXPECT_FLOAT_EQ(p1.z(), p2.z());
+}
+
+void comparePointsApprox(const Point3D& p1, const Point3D& p2, float eps) {
+  EXPECT_NEAR(p1.x(), p2.x(), eps);
+  EXPECT_NEAR(p1.y(), p2.y(), eps);
+  EXPECT_NEAR(p1.z(), p2.z(), eps);
+}
 
 class Point3Test : public testing::Test {
  public:

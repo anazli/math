@@ -1,4 +1,7 @@
+#include "mat2.h"
+
 #include "gtest/gtest.h"
+#include "vec2.h"
 
 class Matrix2Test : public testing::Test {
  public:

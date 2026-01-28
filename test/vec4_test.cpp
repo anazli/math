@@ -1,3 +1,5 @@
+#include "vec4.h"
+
 #include "gtest/gtest.h"
 
 class Vector4Test : public testing::Test {

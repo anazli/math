@@ -1,4 +1,7 @@
+#include "mat3.h"
+
 #include "gtest/gtest.h"
+#include "vec3.h"
 
 class Matrix3Test : public testing::Test {
  public:
