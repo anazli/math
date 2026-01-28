@@ -12,5 +12,5 @@ set(TEST_EXECUTABLE math-tests)
 
 file(GLOB TEST_SOURCES "*.cpp")
 add_executable(${TEST_EXECUTABLE} ${TEST_SOURCES})
-target_link_libraries(${TEST_EXECUTABLE} PRIVATE math gtest_main gtest)
+target_link_libraries(${TEST_EXECUTABLE} PRIVATE math gtest_main gtest gmock)
 gtest_discover_tests(${TEST_EXECUTABLE})
