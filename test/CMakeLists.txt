@@ -8,10 +8,9 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 include(GoogleTest)
 
-set(TEST_EXECUTABLE test-math)
+set(TEST_EXECUTABLE math-tests)
 
 file(GLOB TEST_SOURCES "*.cpp")
 add_executable(${TEST_EXECUTABLE} ${TEST_SOURCES})
-target_link_libraries(${TEST_EXECUTABLE} gtest_main gtest)
-target_include_directories(${TEST_EXECUTABLE} PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_link_libraries(${TEST_EXECUTABLE} PRIVATE math gtest_main gtest)
 gtest_discover_tests(${TEST_EXECUTABLE})

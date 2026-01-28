@@ -1,6 +1,7 @@
 #pragma once
 
-#include "tools/tools.h"
+#include "point3.h"
+#include "vec3.h"
 
 class Ray {
  public:
