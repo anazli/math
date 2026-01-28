@@ -5,7 +5,7 @@
 
 #include "vec2.h"
 
-template <class T>
+template <numeric T>
 class Vec2;
 
 template <class T>
