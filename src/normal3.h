@@ -81,7 +81,7 @@ using Normal3d = Normal3<double>;
 // Overloaded I/O operators (input, output)
 //--------------------------------------------
 
-template <typename T>
+template <numeric T>
 inline std::istream& operator>>(std::istream& in, Normal3<T>& n) {
   T x, y, z;
   in >> x >> y >> z;
@@ -89,7 +89,7 @@ inline std::istream& operator>>(std::istream& in, Normal3<T>& n) {
   return in;
 }
 
-template <typename T>
+template <numeric T>
 inline std::ostream& operator<<(std::ostream& out, const Normal3<T>& n) {
   out << "(" << n.x() << "," << n.y() << "," << n.z() << ")" << std::endl;
   return out;
@@ -99,84 +99,84 @@ inline std::ostream& operator<<(std::ostream& out, const Normal3<T>& n) {
 // Overloaded math operators as normal functions
 //----------------------------------------------
 
-template <typename T>
+template <numeric T>
 Normal3<T> operator+(const Normal3<T>& n1, const Normal3<T>& n2) {
   return Normal3<T>(n1.x() + n2.x(), n1.y() + n2.y(), n1.z() + n2.z());
 }
 
-template <typename T>
+template <numeric T>
 Normal3<T> operator+(const Normal3<T>& n, const Vec3<T>& v) {
   return Vec3<T>(n.x() + v.x(), n.y() + v.y(), n.z() + v.z());
 }
 
-template <typename T>
+template <numeric T>
 Normal3<T> operator+(const Vec3<T>& v, const Normal3<T>& n) {
   return n + v;
 }
 
-template <typename T>
+template <numeric T>
 Normal3<T> operator+(const Normal3<T>& n, T num) {
   return Normal3<T>(n.x() + num, n.y() + num, n.z() + num);
 }
 
-template <typename T>
+template <numeric T>
 Normal3<T> operator+(T num, const Normal3<T>& v) {
   return v + num;
 }
 
-template <typename T>
+template <numeric T>
 Normal3<T> operator-(const Normal3<T>& n1, const Normal3<T>& n2) {
   return Normal3<T>(n1.x() - n2.x(), n1.y() - n2.y(), n1.z() - n2.z());
 }
 
-template <typename T>
+template <numeric T>
 Normal3<T> operator-(const Normal3<T>& n, T num) {
   return Normal3<T>(n.x() - num, n.y() - num, n.z() - num);
 }
 
-template <typename T>
+template <numeric T>
 Normal3<T> operator-(T num, const Normal3<T>& n) {
   return n - num;
 }
 
-template <typename T>
+template <numeric T>
 Normal3<T> operator*(const Normal3<T>& n1, const Normal3<T>& n2) {
   return Normal3<T>(n1.x() * n2.x(), n1.y() * n2.y(), n1.z() * n2.z());
 }
 
-template <typename T>
+template <numeric T>
 Normal3<T> operator*(const Normal3<T>& n, const Vec3<T>& v) {
   return Normal3<T>(n.x() * v.x(), n.y() * v.y(), n.z() * v.z());
 }
 
-template <typename T>
+template <numeric T>
 Normal3<T> operator*(const Vec3<T>& v, const Normal3<T>& n) {
   return n * v;
 }
 
-template <typename T>
+template <numeric T>
 Normal3<T> operator*(const Normal3<T>& n, T num) {
   return Normal3<T>(n.x() * num, n.y() * num, n.z() * num);
 }
 
-template <typename T>
+template <numeric T>
 Normal3<T> operator*(T num, const Normal3<T>& n) {
   return n * num;
 }
 
-template <typename T>
+template <numeric T>
 T dot(const Normal3<T>& n1, const Normal3<T>& n2) {
   Normal3<T> n = n1 * n2;
   return n.x() + n.y() + n.z();
 }
 
-template <typename T>
+template <numeric T>
 T dot(const Normal3<T>& n, const Vec3<T>& v) {
   Normal3<T> u = n * v;
   return u.x() + u.y() + u.z();
 }
 
-template <typename T>
+template <numeric T>
 T dot(const Vec3<T>& v, const Normal3<T>& n) {
   return dot(n, v);
 }
