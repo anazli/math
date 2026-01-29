@@ -5,6 +5,8 @@
 #include <iostream>
 #include <random>
 
+#include "types.h"
+
 template <numeric T>
 class Vec4;
 
