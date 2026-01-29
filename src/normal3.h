@@ -167,6 +167,18 @@ Normal3<T> operator*(T num, const Normal3<T>& n) {
 }
 
 template <numeric T>
+Normal3<T> operator/(const Normal3<T>& n1, const Normal3<T>& n2) {
+  auto d = n2 + static_cast<T>(1.E-30);
+  return Normal3<T>(n1.x() / d.x(), n1.y() / d.y(), n1.z() / d.z());
+}
+
+template <numeric T>
+Normal3<T> operator/(const Normal3<T>& n, T num) {
+  num += 1.E-30;
+  return Normal3<T>(n.x() / num, n.y() / num, n.z() / num);
+}
+
+template <numeric T>
 T dot(const Normal3<T>& n1, const Normal3<T>& n2) {
   Normal3<T> n = n1 * n2;
   return n.x() + n.y() + n.z();
