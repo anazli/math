@@ -14,11 +14,13 @@ class Vec2 {
   Vec2() = default;
   Vec2(T p1, T p2) : m_x{p1}, m_y{p2} {}
 
+  static Vec2<T> unit_vec() { return Vec2<T>(T{1}, T{1}); }
+
   T x() const { return m_x; }
   T y() const { return m_y; }
 
-  void setX(T num) { m_x = num; }
-  void setY(T num) { m_y = num; }
+  void x(T num) { m_x = num; }
+  void y(T num) { m_y = num; }
   void set(T num) { m_x = m_y = num; }
   void set(T num1, T num2) {
     m_x = num1;
@@ -49,12 +51,12 @@ class Vec2 {
     m_y = static_cast<T>(m_y / l);
   }
 
-  auto length() const { return sqrt(m_x * m_x + m_y * m_y); }
+  auto length() const { return static_cast<T>(sqrt(m_x * m_x + m_y * m_y)); }
   bool is_zero() const { return *this == Vec2<T>(T{0}, T{0}); }
 
  private:
-  T m_x = T{};
-  T m_y = T{};
+  T m_x = T{0};
+  T m_y = T{0};
 };
 
 using Vec2i = Vec2<int>;
