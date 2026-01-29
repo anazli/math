@@ -6,6 +6,7 @@
 
 #include "mat3.h"
 #include "types.h"
+#include "vec4.h"
 
 template <numeric T>
 class Vec4;
