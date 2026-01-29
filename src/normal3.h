@@ -5,16 +5,16 @@
 #include <iostream>
 #include <random>
 
-template <class T>
+template <numeric T>
 class Vec4;
 
-template <class T>
+template <numeric T>
 class Vec3;
 
-template <class T>
+template <numeric T>
 class Point3;
 
-template <class T>
+template <numeric T>
 class Normal3 {
  public:
   Normal3() = default;
@@ -27,14 +27,14 @@ class Normal3 {
   T y() const { return m_y; }
   T z() const { return m_z; }
 
-  void setX(T num) { m_x = num; }
-  void setY(T num) { m_y = num; }
-  void setZ(T num) { m_z = num; }
-  void set(T num) { m_x = m_y = m_z = num; }
-  void set(T num1, T num2, T num3) {
-    m_x = num1;
-    m_y = num2;
-    m_z = num3;
+  void x(T x) { m_x = x; }
+  void y(T y) { m_y = y; }
+  void z(T z) { m_z = z; }
+  void set(T n) { m_x = m_y = m_z = n; }
+  void set(T x, T y, T z) {
+    m_x = x;
+    m_y = y;
+    m_z = z;
   }
 
   T operator[](int i) const {
@@ -63,31 +63,19 @@ class Normal3 {
   Normal3<T> operator+() const { return Normal3<T>(m_x, m_y, m_z); };
   Normal3<T> operator-() const { return Normal3<T>(-m_x, -m_y, -m_z); }
 
-  void normalize();
-  float length() const { return sqrt(x() * x() + y() * y() + z() * z()); }
-
-  void zero() {
-    m_x = T{};
-    m_y = T{};
-    m_z = T{};
+  auto length() const {
+    return static_cast<T>(sqrt(x() * x() + y() * y() + z() * z()));
   }
 
  private:
-  T m_x = T{};
-  T m_y = T{};
-  T m_z = T{};
+  T m_x = T{1};
+  T m_y = T{1};
+  T m_z = T{1};
 };
 
-using Normal3D = Normal3<float>;
-
-//--------------------------------------------
-// Overloaded Member operators (input, output)
-//--------------------------------------------
-
-template <typename T>
-void Normal3<T>::normalize() {
-  *this = (*this) / (this->length() + 1.E-30f);
-}
+using Normal3i = Normal3<int>;
+using Normal3f = Normal3<float>;
+using Normal3d = Normal3<double>;
 
 //--------------------------------------------
 // Overloaded I/O operators (input, output)
@@ -107,18 +95,9 @@ inline std::ostream& operator<<(std::ostream& out, const Normal3<T>& n) {
   return out;
 }
 
-//--------------------------------------------
-// Overloaded Normal Function operators (input, output)
-//--------------------------------------------
-template <typename T>
-bool operator==(const Normal3<T>& n, const Vec3<T>& v) {
-  return (n.x() == v.x() && n.y() == v.y() && n.z() == v.z());
-}
-
-template <typename T>
-bool operator!=(const Normal3<T>& n, const Vec3<T>& v) {
-  return !(n == v);
-}
+//----------------------------------------------
+// Overloaded math operators as normal functions
+//----------------------------------------------
 
 template <typename T>
 Normal3<T> operator+(const Normal3<T>& n1, const Normal3<T>& n2) {
@@ -186,18 +165,6 @@ Normal3<T> operator*(T num, const Normal3<T>& n) {
 }
 
 template <typename T>
-Normal3<T> operator/(const Normal3<T>& n1, const Normal3<T>& n2) {
-  auto d = n2 + static_cast<T>(1.E-30);
-  return Normal3<T>(n1.x() / d.x(), n1.y() / d.y(), n1.z() / d.z());
-}
-
-template <typename T>
-Normal3<T> operator/(const Normal3<T>& n, T num) {
-  num += 1.E-30;
-  return Normal3<T>(n.x() / num, n.y() / num, n.z() / num);
-}
-
-template <typename T>
 T dot(const Normal3<T>& n1, const Normal3<T>& n2) {
   Normal3<T> n = n1 * n2;
   return n.x() + n.y() + n.z();
@@ -212,9 +179,4 @@ T dot(const Normal3<T>& n, const Vec3<T>& v) {
 template <typename T>
 T dot(const Vec3<T>& v, const Normal3<T>& n) {
   return dot(n, v);
-}
-
-template <typename T>
-Normal3<T> getUnitVectorOf(const Normal3<T>& n) {
-  return n / static_cast<T>(n.length() + 1.E-30);
 }
