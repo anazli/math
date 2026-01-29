@@ -81,10 +81,9 @@ inline std::ostream& operator<<(std::ostream& out, const Vec2<T>& v) {
   return out;
 }
 
-//--------------------------------------------
-// Overloaded operators as normal functions
-// Binary operator (+, -, *)
-//--------------------------------------------
+//----------------------------------------------
+// Overloaded math operators as normal functions
+//----------------------------------------------
 
 template <numeric T>
 Vec2<T> operator+(const Vec2<T>& v1, const Vec2<T>& v2) {

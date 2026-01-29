@@ -116,9 +116,9 @@ inline std::ostream& operator<<(std::ostream& out, const Vec3<T>& v) {
   return out;
 }
 
-//--------------------------------------------
-// Overloaded Normal Function operators (input, output)
-//--------------------------------------------
+//----------------------------------------------
+// Overloaded math operators as normal functions
+//----------------------------------------------
 
 template <numeric T>
 Vec3<T> operator+(const Vec3<T>& v1, const Vec3<T>& v2) {
@@ -180,6 +180,10 @@ Vec3<T> operator/(const Vec3<T>& v, T num) {
   }
   return Vec3<T>(v.x() / num, v.y() / num, v.z() / num);
 }
+
+//--------------------------------------------
+// Other vector operations
+//--------------------------------------------
 
 template <numeric T>
 T dot(const Vec3<T>& v1, const Vec3<T>& v2) {
