@@ -1,4 +1,21 @@
-These are tools that I create for fun and learning and also use in small Projects
-like Ray Tracing, Game Physics and Machine Learning. The goal is to simply have
-a few tested Classes (Vector, Matrix etc) that one might need in Computer Simulations
-like these. Write once, use always. 
+# Math
+A tiny math library with custom vector, matrix and other template classes that I use in other small projects as well.
+
+So far it includes:
+* 2D Vector
+* 3D Vector
+* 4D Vector
+* 3D Point
+* 2x2 Matrix
+* 3x3 Matrix
+* 4x4 Matrix
+* Ray
+
+Building and Running the tests
+------------------------------
+```bash
+cmake -B build -DENABLE_TESTING=ON
+cd build
+make
+ctest
+```
