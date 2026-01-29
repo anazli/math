@@ -4,15 +4,16 @@
 #include <iostream>
 
 #include "mat2.h"
+#include "types.h"
 #include "vec3.h"
 
-template <class T>
+template <numeric T>
 class Vec3;
 
-template <class T>
+template <numeric T>
 class Mat2;
 
-template <class T>
+template <numeric T>
 class Mat3 {
  public:
   Mat3() {
@@ -73,12 +74,12 @@ class Mat3 {
 
 using Mat3D = Mat3<float>;
 
-template <typename T>
+template <numeric T>
 T Mat3<T>::trace() const {
   return m_vec[0][0] + m_vec[1][1] + m_vec[2][2];
 }
 
-template <typename T>
+template <numeric T>
 T Mat3<T>::determinant() const {
   double r1 =
       m_vec[0][0] * (m_vec[1][1] * m_vec[2][2] - m_vec[1][2] * m_vec[2][1]);
@@ -90,7 +91,7 @@ T Mat3<T>::determinant() const {
   return r1 - r2 + r3;
 }
 
-template <typename T>
+template <numeric T>
 Mat2<T> Mat3<T>::minor(int i, int j) const {
   Mat2<T> mi;
   int yy = 0;
@@ -107,7 +108,7 @@ Mat2<T> Mat3<T>::minor(int i, int j) const {
   return mi;
 }
 
-template <typename T>
+template <numeric T>
 Mat3<T> Mat3<T>::inverse() const {
   Mat3<T> inv;
   for (int i = 0; i < 3; ++i) {
@@ -122,7 +123,7 @@ Mat3<T> Mat3<T>::inverse() const {
   return inv;
 }
 
-template <typename T>
+template <numeric T>
 Mat3<T> Mat3<T>::transpose() const {
   Mat3<T> ret;
   ret[0][0] = m_vec[0][0];
@@ -140,27 +141,27 @@ Mat3<T> Mat3<T>::transpose() const {
   return ret;
 }
 
-template <typename T>
+template <numeric T>
 Mat3<T> operator+(const Mat3<T>& m1, const Mat3<T>& m2) {
   return Mat3<T>(m1[0] + m2[0], m1[1] + m2[1], m1[2] + m2[2]);
 }
 
-template <typename T>
+template <numeric T>
 Mat3<T> operator+(const Mat3<T>& m1, T num) {
   return Mat3<T>(m1[0] + num, m1[1] + num, m1[2] + num);
 }
 
-template <typename T>
+template <numeric T>
 Mat3<T> operator-(const Mat3<T>& m1, const Mat3<T>& m2) {
   return Mat3<T>(m1[0] - m2[0], m1[1] - m2[1], m1[2] - m2[2]);
 }
 
-template <typename T>
+template <numeric T>
 Mat3<T> operator-(const Mat3<T>& m1, T num) {
   return Mat3<T>(m1[0] - num, m1[1] - num, m1[2] - num);
 }
 
-template <typename T>
+template <numeric T>
 Mat3<T> operator*(const Mat3<T>& m1, const Mat3<T>& m2) {
   Vec3<T> row1 = m1[0];
   Vec3<T> row2 = m1[1];
@@ -181,12 +182,12 @@ Mat3<T> operator*(const Mat3<T>& m1, const Mat3<T>& m2) {
    * 20 21 22*/
 }
 
-template <typename T>
+template <numeric T>
 Mat3<T> operator*(const Mat3<T>& m1, T num) {
   return Mat3<T>(m1[0] * num, m1[1] * num, m1[2] * num);
 }
 
-template <typename T>
+template <numeric T>
 std::ostream& operator<<(std::ostream& out, const Mat3<T>& m) {
   out << "{" << m[0] << "," << m[1] << "," << m[2] << "}";
   return out;

@@ -3,12 +3,13 @@
 #include <cassert>
 #include <iostream>
 
+#include "types.h"
 #include "vec2.h"
 
 template <numeric T>
 class Vec2;
 
-template <class T>
+template <numeric T>
 class Mat2 {
  public:
   Mat2() = default;
@@ -43,32 +44,32 @@ class Mat2 {
 
 using Mat2D = Mat2<float>;
 
-template <typename T>
+template <numeric T>
 Mat2<T> operator+(const Mat2<T>& m1, const Mat2<T>& m2) {
   return Mat2<T>(m1[0] + m2[0], m1[1] + m2[1]);
 }
 
-template <typename T>
+template <numeric T>
 Mat2<T> operator+(const Mat2<T>& m1, T num) {
   return Mat2<T>(m1[0] + num, m1[1] + num);
 }
 
-template <typename T>
+template <numeric T>
 Mat2<T> operator-(const Mat2<T>& m1, const Mat2<T>& m2) {
   return Mat2<T>(m1[0] - m2[0], m1[1] - m2[1]);
 }
 
-template <typename T>
+template <numeric T>
 Mat2<T> operator-(const Mat2<T>& m1, T num) {
   return Mat2<T>(m1[0] - num, m1[1] - num);
 }
 
-template <typename T>
+template <numeric T>
 Mat2<T> operator*(const Mat2<T>& m1, T num) {
   return Mat2<T>(m1[0] * num, m1[1] * num);
 }
 
-template <typename T>
+template <numeric T>
 Mat2<T> operator*(const Mat2<T>& m1, const Mat2<T>& m2) {
   Mat2<T> ret;
   ret[0][0] = m1[0][0] * m2[0][0] + m1[0][1] * m2[1][0];
@@ -79,7 +80,7 @@ Mat2<T> operator*(const Mat2<T>& m1, const Mat2<T>& m2) {
   return ret;
 }
 
-template <typename T>
+template <numeric T>
 std::ostream& operator<<(std::ostream& out, const Mat2<T>& m) {
   out << "{" << m[0] << "," << m[1] << "}";
   return out;

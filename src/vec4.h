@@ -4,16 +4,18 @@
 #include <iostream>
 #include <random>
 
-template <typename T>
+#include "types.h"
+
+template <numeric T>
 class Vec3;
 
-template <typename T>
+template <numeric T>
 class Point3;
 
-template <typename T>
+template <numeric T>
 class Normal3;
 
-template <class T>
+template <numeric T>
 class Vec4 {
  public:
   Vec4() = default;
@@ -104,7 +106,7 @@ using Vec4D = Vec4<float>;
 // Overloaded Member operators
 //--------------------------------------------
 
-template <typename T>
+template <numeric T>
 void Vec4<T>::normalize() {
   *this = (*this) / (this->length() + (T)1.E-30);
 }
@@ -113,7 +115,7 @@ void Vec4<T>::normalize() {
 // Overloaded I/O operators (input, output)
 //--------------------------------------------
 
-template <typename T>
+template <numeric T>
 std::istream& operator>>(std::istream& in, Vec4<T>& v) {
   T x, y, z, w;
   in >> x >> y >> z >> w;
@@ -121,80 +123,80 @@ std::istream& operator>>(std::istream& in, Vec4<T>& v) {
   return in;
 }
 
-template <typename T>
+template <numeric T>
 std::ostream& operator<<(std::ostream& out, const Vec4<T>& v) {
   out << "(" << v.x() << "," << v.y() << "," << v.z() << "," << v.w() << ")";
   return out;
 }
 
-template <typename T>
+template <numeric T>
 Vec4<T> operator+(const Vec4<T>& v1, const Vec4<T>& v2) {
   return Vec4<T>(v1.x() + v2.x(), v1.y() + v2.y(), v1.z() + v2.z(),
                  v1.w() + v2.w());
 }
 
-template <typename T>
+template <numeric T>
 Vec4<T> operator+(const Vec4<T>& v, T num) {
   return Vec4<T>(v.x() + num, v.y() + num, v.z() + num, v.w() + num);
 }
 
-template <typename T>
+template <numeric T>
 Vec4<T> operator+(T num, const Vec4<T>& v) {
   return v + num;
 }
 
-template <typename T>
+template <numeric T>
 Vec4<T> operator-(const Vec4<T>& v1, const Vec4<T>& v2) {
   return Vec4<T>(v1.x() - v2.x(), v1.y() - v2.y(), v1.z() - v2.z(),
                  v1.w() - v2.w());
 }
 
-template <typename T>
+template <numeric T>
 Vec4<T> operator-(const Vec4<T>& v, T num) {
   return Vec4<T>(v.x() - num, v.y() - num, v.z() - num, v.w() - num);
 }
 
-template <typename T>
+template <numeric T>
 Vec4<T> operator-(T num, const Vec4<T>& v) {
   return v - num;
 }
 
-template <typename T>
+template <numeric T>
 Vec4<T> operator*(const Vec4<T>& v1, const Vec4<T>& v2) {
   return Vec4<T>(v1.x() * v2.x(), v1.y() * v2.y(), v1.z() * v2.z(),
                  v1.w() * v2.w());
 }
 
-template <typename T>
+template <numeric T>
 Vec4<T> operator*(const Vec4<T>& v, T num) {
   return Vec4<T>(v.x() * num, v.y() * num, v.z() * num, v.w() * num);
 }
 
-template <typename T>
+template <numeric T>
 Vec4<T> operator*(T num, const Vec4<T>& v) {
   return v * num;
 }
 
-template <typename T>
+template <numeric T>
 Vec4<T> operator/(const Vec4<T>& v1, const Vec4<T>& v2) {
   auto d = v2 + 1.E-30;
   return Vec4<T>(v1.x() / d.x(), v1.y() / d.y(), v1.z() / d.z(),
                  v1.w() / d.w());
 }
 
-template <typename T>
+template <numeric T>
 Vec4<T> operator/(const Vec4<T>& v, T num) {
   num += 1.E-30;
   return Vec4<T>(v.x() / num, v.y() / num, v.z() / num, v.w() / num);
 }
 
-template <typename T>
+template <numeric T>
 double dot(const Vec4<T>& v1, const Vec4<T>& v2) {
   Vec4<T> v = v1 * v2;
   return v.x() + v.y() + v.z() + v.w();
 }
 
-template <typename T>
+template <numeric T>
 Vec4<T> getUnitVectorOf(const Vec4<T>& v) {
   return v / (v.length() + static_cast<T>(1.E-30));
 }

@@ -31,7 +31,7 @@ TEST_F(Vector3Test, AssertsOutOfBounds) {
 }
 
 TEST_F(Vector3Test, SetsCoords) {
-  v.setX(5.);
+  v.x(5.);
   v[1] = 4.;
   v[2] = 0.2;
   compareVectors(v, Vec3D(5.f, 4.f, 0.2f));
@@ -100,7 +100,7 @@ TEST_F(Vector3Test, DotProduct) {
 
 TEST_F(Vector3Test, GetUnitVectorOf) {
   v = Vec3D(4.36f, 7.62f, 0.466f);
-  v = getUnitVectorOf(v);
+  v = normalized(v);
   ASSERT_FLOAT_EQ(v.length(), 1.f);
 }
 

@@ -5,23 +5,24 @@
 #include <iostream>
 
 #include "mat3.h"
+#include "types.h"
 
-template <class T>
+template <numeric T>
 class Vec4;
 
-template <class T>
+template <numeric T>
 class Vec3;
 
-template <class T>
+template <numeric T>
 class Point3;
 
-template <class T>
+template <numeric T>
 class Mat2;
 
-template <class T>
+template <numeric T>
 class Mat3;
 
-template <class T>
+template <numeric T>
 class Mat4 {
  public:
   Mat4() {
@@ -95,12 +96,12 @@ class Mat4 {
 
 using Mat4D = Mat4<float>;
 
-template <typename T>
+template <numeric T>
 T Mat4<T>::trace() const {
   return m_vec[0][0] + m_vec[1][1] + m_vec[2][2] + m_vec[3][3];
 }
 
-template <typename T>
+template <numeric T>
 T Mat4<T>::determinant() const {
   T det = 0;
   for (int j = 0; j < 4; ++j) {
@@ -110,7 +111,7 @@ T Mat4<T>::determinant() const {
   return det;
 }
 
-template <typename T>
+template <numeric T>
 Mat3<T> Mat4<T>::minor(int i, int j) const {
   Mat3<T> mi;
   int yy = 0;
@@ -127,7 +128,7 @@ Mat3<T> Mat4<T>::minor(int i, int j) const {
   return mi;
 }
 
-template <typename T>
+template <numeric T>
 Mat4<T> Mat4<T>::inverse() const {
   T det = determinant();
   assert(det != 0);  // Matrix is not invertible!
@@ -141,7 +142,7 @@ Mat4<T> Mat4<T>::inverse() const {
   return inv;
 }
 
-template <typename T>
+template <numeric T>
 Mat4<T> Mat4<T>::transpose() const {
   Mat4<T> ret;
   ret[0][0] = m_vec[0][0];
@@ -167,7 +168,7 @@ Mat4<T> Mat4<T>::transpose() const {
   return ret;
 }
 
-template <typename T>
+template <numeric T>
 void Mat4<T>::Orient(const Vec3<T>& pos, const Vec3<T>& fwd,
                      const Vec3<T>& up) {
   Vec3<T> left = up.cross(fwd);
@@ -176,7 +177,7 @@ void Mat4<T>::Orient(const Vec3<T>& pos, const Vec3<T>& fwd,
   m_vec[2] = Vec4<T>(fwd.z(), left.z(), up.z(), pos.z());
   m_vec[3] = Vec4<T>(T{0}, T{0}, T{0}, T{1});
 }
-template <typename T>
+template <numeric T>
 void Mat4<T>::LookAt(const Vec3<T>& pos, const Vec3<T>& lookAt,
                      const Vec3<T>& up) {
   Vec3<T> fwd = pos - lookAt;
@@ -194,27 +195,27 @@ void Mat4<T>::LookAt(const Vec3<T>& pos, const Vec3<T>& lookAt,
   m_vec[3] = Vec4<T>(T{0}, T{0}, T{0}, T{1});
 }
 
-template <typename T>
+template <numeric T>
 Mat4<T> operator+(const Mat4<T>& m1, const Mat4<T>& m2) {
   return Mat4<T>(m1[0] + m2[0], m1[1] + m2[1], m1[2] + m2[2], m1[3] + m2[3]);
 }
 
-template <typename T>
+template <numeric T>
 Mat4<T> operator+(const Mat4<T>& m1, T num) {
   return Mat4<T>(m1[0] + num, m1[1] + num, m1[2] + num, m1[3] + num);
 }
 
-template <typename T>
+template <numeric T>
 Mat4<T> operator-(const Mat4<T>& m1, const Mat4<T>& m2) {
   return Mat4<T>(m1[0] - m2[0], m1[1] - m2[1], m1[2] - m2[2], m1[3] - m2[3]);
 }
 
-template <typename T>
+template <numeric T>
 Mat4<T> operator-(const Mat4<T>& m1, T num) {
   return Mat4<T>(m1[0] - num, m1[1] - num, m1[2] - num, m1[3] - num);
 }
 
-template <typename T>
+template <numeric T>
 Mat4<T> operator*(const Mat4<T>& m1, const Mat4<T>& m2) {
   Vec4<T> row1 = m1[0];
   Vec4<T> row2 = m1[1];
@@ -243,7 +244,7 @@ Mat4<T> operator*(const Mat4<T>& m1, const Mat4<T>& m2) {
    * 30 31 32 33*/
 }
 
-template <typename T>
+template <numeric T>
 Vec4<T> operator*(const Mat4<T>& m, const Vec4<T>& v) {
   Vec4<T> ret;
   ret[0] = dot(m[0], v);
@@ -253,12 +254,12 @@ Vec4<T> operator*(const Mat4<T>& m, const Vec4<T>& v) {
   return ret;
 }
 
-template <typename T>
+template <numeric T>
 Mat4<T> operator*(const Mat4<T>& m1, T num) {
   return Mat4<T>(m1[0] * num, m1[1] * num, m1[2] * num, m1[3] * num);
 }
 
-template <typename T>
+template <numeric T>
 Mat4<T> translation(T x, T y, T z) {
   Mat4<T> ret;
   ret.identity();
@@ -268,7 +269,7 @@ Mat4<T> translation(T x, T y, T z) {
   return ret;
 }
 
-template <typename T>
+template <numeric T>
 Mat4<T> translation(const Vec3<T>& v) {
   Mat4<T> ret;
   ret.identity();
@@ -278,7 +279,7 @@ Mat4<T> translation(const Vec3<T>& v) {
   return ret;
 }
 
-template <typename T>
+template <numeric T>
 Mat4<T> scale(T x, T y, T z) {
   Mat4<T> ret;
   ret.identity();
@@ -288,7 +289,7 @@ Mat4<T> scale(T x, T y, T z) {
   return ret;
 }
 
-template <typename T>
+template <numeric T>
 Mat4<T> scale(const Vec3<T>& v) {
   Mat4<T> ret;
   ret.identity();
@@ -300,7 +301,7 @@ Mat4<T> scale(const Vec3<T>& v) {
 
 // TODO: floating point errors ~ E-8
 
-template <typename T>
+template <numeric T>
 Mat4<T> rotationOverX(T rad) {
   Mat4<T> ret;
   ret.identity();
@@ -311,7 +312,7 @@ Mat4<T> rotationOverX(T rad) {
   return ret;
 }
 
-template <typename T>
+template <numeric T>
 Mat4<T> rotationOverY(T rad) {
   Mat4<T> ret;
   ret.identity();
@@ -322,7 +323,7 @@ Mat4<T> rotationOverY(T rad) {
   return ret;
 }
 
-template <typename T>
+template <numeric T>
 Mat4<T> rotationOverZ(T rad) {
   Mat4<T> ret;
   ret.identity();
@@ -333,11 +334,11 @@ Mat4<T> rotationOverZ(T rad) {
   return ret;
 }
 
-template <typename T>
+template <numeric T>
 Mat4<T> view_transform(const Point3<T>& from, const Point3<T>& to,
                        const Vec3<T>& up) {
-  Vec3<T> forward = getUnitVectorOf(to - from);
-  Vec3<T> up_norm = getUnitVectorOf(up);
+  Vec3<T> forward = normalized(to - from);
+  Vec3<T> up_norm = normalized(up);
   Vec3<T> left = cross(forward, up_norm);
   Vec3<T> up_res = cross(left, forward);
 
@@ -352,7 +353,7 @@ Mat4<T> view_transform(const Point3<T>& from, const Point3<T>& to,
 
 // TODO: Shearing
 
-template <typename T>
+template <numeric T>
 std::ostream& operator<<(std::ostream& out, const Mat4<T>& m) {
   out << "{" << m[0] << "," << m[1] << "," << m[2] << "," << m[3] << "}";
   return out;

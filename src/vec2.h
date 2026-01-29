@@ -14,7 +14,7 @@ class Vec2 {
   Vec2() = default;
   Vec2(T p1, T p2) : m_x{p1}, m_y{p2} {}
 
-  static Vec2<T> unit_vec() { return Vec2<T>(T{1}, T{1}); }
+  static Vec2<T> create_unit_vec() { return Vec2<T>(T{1}, T{1}); }
 
   T x() const { return m_x; }
   T y() const { return m_y; }

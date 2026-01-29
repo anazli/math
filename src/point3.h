@@ -3,16 +3,18 @@
 #include <cassert>
 #include <sstream>
 
-template <class T>
+#include "types.h"
+
+template <numeric T>
 class Vec4;
 
-template <class T>
+template <numeric T>
 class Vec3;
 
-template <class T>
+template <numeric T>
 class Normal3;
 
-template <class T>
+template <numeric T>
 class Point3 {
  public:
   Point3() = default;
@@ -77,40 +79,40 @@ class Point3 {
 
 using Point3D = Point3<float>;
 
-template <typename T>
+template <numeric T>
 Vec3<T> operator-(const Vec3<T> &v,      // TODO: Cannot be (Smth is wrong)
                   const Point3<T> &p) {  // Vector - Point = Vector
   return Vec3<T>(v.x() - p.x(), v.y() - p.y(), v.z() - p.z());
 }
 
-template <typename T>
+template <numeric T>
 Vec3<T> operator+(const Vec3<T> &v, const Point3<T> &p) {
   return Vec3<T>(v.x() + p.x(), v.y() + p.y(), v.z() + p.z());
 }
 
-template <typename T>
+template <numeric T>
 Point3<T> operator+(const Point3<T> &p, T num) {
   return Point3<T>(p.x() + num, p.y() + num, p.z() + num);
 }
 
-template <typename T>
+template <numeric T>
 std::stringstream &operator<<(std::stringstream &out, const Point3<T> &p) {
   out << "(" << p.x() << "," << p.y() << "," << p.z() << ")";
   return out;
 }
 
-template <typename T>
+template <numeric T>
 std::ostream &operator<<(std::ostream &out, const Point3<T> &p) {
   out << "(" << p.x() << "," << p.y() << "," << p.z() << ")";
   return out;
 }
 
-template <typename T>
+template <numeric T>
 Point3<T> operator*(const Point3<T> &p, T num) {
   return Point3<T>(p.x() * num, p.y() * num, p.z() * num);
 }
 
-template <typename T>
+template <numeric T>
 Point3<T> operator*(T num, const Point3<T> &p) {
   return p * num;
 }

@@ -45,7 +45,7 @@ TEST_F(Vector2Test, SubtractsVectorOrNumber) {
 
 TEST_F(Vector2Test, GetsLenghtOfVector) {
   auto eps = 1E-6f;
-  auto v1 = Vec2f::unit_vec();
+  auto v1 = Vec2f::create_unit_vec();
   auto v2 = Vec2f(3.f, 3.f);
   auto v3 = Vec2f(-5.f, -5.f);
 
