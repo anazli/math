@@ -182,3 +182,12 @@ template <numeric T>
 T dot(const Vec3<T>& v, const Normal3<T>& n) {
   return dot(n, v);
 }
+
+template <numeric T>
+Normal3<T> normalized(const Normal3<T>& v) {
+  auto l = v.length();
+  if (l < std::numeric_limits<double>::epsilon()) {
+    throw std::runtime_error("Cannot normalize zero-length 3D normal");
+  }
+  return v / static_cast<T>(l);
+}
