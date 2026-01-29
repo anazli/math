@@ -1,171 +1,129 @@
 #include "vec4.h"
 
-#include "gtest/gtest.h"
+#include <gmock/gmock.h>
+#include <gtest/gtest.h>
+
+using testing::Eq;
+using testing::FloatEq;
+
+MATCHER_P2(Vec4Near, v, eps, "") {
+  return fabs(arg.x() - v.x()) < eps && fabs(arg.y() - v.y()) < eps &&
+         fabs(arg.z() - v.z()) < eps && fabs(arg.w() - v.w()) < eps;
+}
 
 class Vector4Test : public testing::Test {
  public:
-  Vec4<double> v;
+  Vec4f v;
+  float eps = 1E-6f;
 };
 
-TEST_F(Vector4Test, CreatesVector) {
-  v = Vec4<double>(0., 0., 0., 0.);
-  ASSERT_DOUBLE_EQ(v.x(), 0.);
-  ASSERT_DOUBLE_EQ(v.y(), 0.);
-  ASSERT_DOUBLE_EQ(v.z(), 0.);
-  ASSERT_DOUBLE_EQ(v.w(), 0.);
-}
+TEST_F(Vector4Test, CreatesVector) { ASSERT_THAT(v, Eq(Vec4f())); }
 
 TEST_F(Vector4Test, AssertsOutOfBounds) {
-  v = Vec4<double>(1., 2., 0.5, 7.5);
-  ASSERT_DEATH(v[4], "");
-  ASSERT_DEATH(v[-1], "");
+  EXPECT_THROW(v[4], std::out_of_range);
+  ASSERT_THROW(v[-1], std::out_of_range);
 }
 
 TEST_F(Vector4Test, SetsCoords) {
-  v.setX(5.);
-  v[1] = 4.;
-  v[2] = 0.2;
-  v.setW(-5.2);
-  ASSERT_DOUBLE_EQ(v.x(), 5.);
-  ASSERT_DOUBLE_EQ(v[1], 4.);
-  ASSERT_DOUBLE_EQ(v[2], 0.2);
-  ASSERT_DOUBLE_EQ(v[3], -5.2);
-}
-
-TEST_F(Vector4Test, SetXYZ) {
-  v.set(-1.24, -5.54, 45.6, -0.5);
-  ASSERT_DOUBLE_EQ(v.x(), -1.24);
-  ASSERT_DOUBLE_EQ(v.y(), -5.54);
-  ASSERT_DOUBLE_EQ(v.z(), 45.6);
-  ASSERT_DOUBLE_EQ(v.w(), -0.5);
-
-  v.set(6.68);
-  ASSERT_DOUBLE_EQ(v.x(), 6.68);
-  ASSERT_DOUBLE_EQ(v.y(), 6.68);
-  ASSERT_DOUBLE_EQ(v.z(), 6.68);
-  ASSERT_DOUBLE_EQ(v.w(), 6.68);
+  v.x(5.f);
+  v[1] = 4.f;
+  v[2] = 0.2f;
+  v.w(-5.2f);
+  ASSERT_THAT(v, Eq(Vec4f(5.f, 4.f, 0.2f, -5.2f)));
 }
 
 TEST_F(Vector4Test, ChangesSign) {
-  v.set(-1.55);
+  auto n = 1.55f;
+  v.set(-n);
   v = -v;
-  ASSERT_DOUBLE_EQ(v[0], 1.55);
-  ASSERT_DOUBLE_EQ(v[1], 1.55);
-  ASSERT_DOUBLE_EQ(v[2], 1.55);
-  ASSERT_DOUBLE_EQ(v[3], 1.55);
+  ASSERT_THAT(v, Eq(Vec4f(n, n, n, n)));
 }
 
 TEST_F(Vector4Test, AddsVectorOrNumber) {
-  v = Vec4<double>(0., 0., 5., 3.5);
-  v = v + 4.46;
-  ASSERT_DOUBLE_EQ(v.x(), 4.46);
-  ASSERT_DOUBLE_EQ(v.y(), 4.46);
-  ASSERT_DOUBLE_EQ(v.z(), 9.46);
-  ASSERT_DOUBLE_EQ(v.w(), 7.96);
+  v = Vec4f(0.f, 0.f, 5.f, 3.5f);
+  v = v + 4.46f;
+  auto v1 = v + Vec4f(4.f, 6.f, 0.f, 45.f);
 
-  v = v + Vec4<double>(4., 6., 0., 45.);
-  ASSERT_DOUBLE_EQ(v.x(), 8.46);
-  ASSERT_DOUBLE_EQ(v.y(), 10.46);
-  ASSERT_DOUBLE_EQ(v.z(), 9.46);
-  ASSERT_DOUBLE_EQ(v.w(), 52.96);
+  EXPECT_THAT(v, Eq(Vec4f(4.46f, 4.46f, 9.46f, 7.96f)));
+  ASSERT_THAT(v1, Eq(Vec4f(8.46f, 10.46f, 9.46f, 52.96f)));
 }
 
 TEST_F(Vector4Test, SubtractsVectorOrNumber) {
-  v = Vec4<double>(0., 0., 3., -5.5);
-  v = v - 4.46;
-  ASSERT_DOUBLE_EQ(v.x(), -4.46);
-  ASSERT_DOUBLE_EQ(v.y(), -4.46);
-  ASSERT_DOUBLE_EQ(v.z(), -1.46);
-  ASSERT_DOUBLE_EQ(v.w(), -9.96);
+  v = Vec4f(0.f, 0.f, 3.f, -5.5f);
+  v = v - 4.46f;
+  auto v1 = v - Vec4f(4.f, 6.f, 0.f, -1.2f);
 
-  v = v - Vec4<double>(4., 6., 0., -1.2);
-  ASSERT_DOUBLE_EQ(v.x(), -8.46);
-  ASSERT_DOUBLE_EQ(v.y(), -10.46);
-  ASSERT_DOUBLE_EQ(v.z(), -1.46);
-  ASSERT_DOUBLE_EQ(v.w(), -8.76);
+  EXPECT_THAT(v, Eq(Vec4f(-4.46f, -4.46f, -1.46f, -9.96f)));
+  ASSERT_THAT(v1, Eq(Vec4f(-8.46f, -10.46f, -1.46f, -8.76f)));
 }
 
 TEST_F(Vector4Test, GetsLenghtOfVector) {
-  v = Vec4<double>(0., 0., 0., 0.);
-  ASSERT_DOUBLE_EQ(v.length(), 0.);
-  v = Vec4<double>(1., 1., 1., 1.);
-  ASSERT_DOUBLE_EQ(v.length(), sqrt(4.));
-  v = Vec4<double>(3., 3., 3., 3.);
-  ASSERT_DOUBLE_EQ(v.length(), sqrt(36.));
-  v = Vec4<double>(-5., -5., 5., 5.);
-  ASSERT_DOUBLE_EQ(v.length(), sqrt(100.));
+  auto v1 = Vec4f::create_unit_vec();
+  auto v2 = Vec4f(3.f, 3.f, 3.f, 3.f);
+  auto v3 = Vec4f(-5.f, -5.f, 5.f, 5.f);
+  EXPECT_THAT(v.length(), FloatEq(0.f));
+  EXPECT_THAT(v1.length(), FloatEq(sqrt(4.f)));
+  EXPECT_THAT(v2.length(), FloatEq(sqrt(36.f)));
+  ASSERT_THAT(v3.length(), FloatEq(sqrt(100.f)));
 }
 
 TEST_F(Vector4Test, MultipliesVectorWithNumber) {
-  v = Vec4<double>(1., 0., 5., -9.);
-  v = v * 5.;
-  ASSERT_DOUBLE_EQ(v.x(), 5.);
-  ASSERT_DOUBLE_EQ(v.y(), 0.);
-  ASSERT_DOUBLE_EQ(v.z(), 25.);
-  ASSERT_DOUBLE_EQ(v.w(), -45.);
+  v = Vec4f(1.f, 0.f, 5.f, -9.f);
+  v = v * 5.f;
+  ASSERT_THAT(v, Eq(Vec4f(5.f, 0.f, 25.f, -45.f)));
 }
 
 TEST_F(Vector4Test, NormalizesVector) {
-  v = Vec4<double>(4.53, 93.5, -56.3, -100.00001);
+  v = Vec4f(4.53f, 93.5f, -56.3f, -100.00001f);
   v.normalize();
-  ASSERT_DOUBLE_EQ(v.length(), 1.);
+  ASSERT_THAT(v.length(), FloatEq(1.f));
 }
 
-TEST_F(Vector4Test, DotProduct) {
-  v = Vec4<double>(3., 3., 4., 1.);
-  ASSERT_DOUBLE_EQ(dot(v, Vec4<double>(3., 3., 9., -10.)), 44.);
-  v = Vec4<double>(-1., 5., 9., -3.);
-  ASSERT_DOUBLE_EQ(dot(v, Vec4<double>(-3., 3., 6., 0.)), 72.);
+TEST_F(Vector4Test, CalculatesDotProduct) {
+  v = Vec4f(3.f, 3.f, 4.f, 1.f);
+  auto v1 = Vec4f(-1.f, 5.f, 9.f, -3.f);
+  EXPECT_THAT(dot(v, Vec4f(3.f, 3.f, 9.f, -10.f)), FloatEq(44.f));
+  ASSERT_THAT(dot(v1, Vec4f(-3.f, 3.f, 6.f, 0.f)), FloatEq(72.f));
 }
 
-TEST_F(Vector4Test, GetUnitVectorOf) {
-  v = Vec4<double>(4.36, 7.62, 0.466, -30485.55555555);
-  v = getUnitVectorOf(v);
-  ASSERT_DOUBLE_EQ(v.length(), 1.);
+TEST_F(Vector4Test, GetsNormalizedVectorOfAnother) {
+  v = Vec4f(4.36f, 7.62f, 0.466f, -30485.55555555f);
+  v = normalized(v);
+  ASSERT_THAT(v.length(), FloatEq(1.f));
 }
 
 TEST_F(Vector4Test, AddsTwoVectors) {
-  v = Vec4<double>(4.532, 45.67, 0.83, -44.6);
-  v = v + Vec4<double>(0.3456, 124.67, 1., 9.);
-  ASSERT_DOUBLE_EQ(v.x(), 4.8776);
-  ASSERT_DOUBLE_EQ(v.y(), 170.34);
-  ASSERT_DOUBLE_EQ(v.z(), 1.83);
-  ASSERT_DOUBLE_EQ(v.w(), -35.6);
+  v = Vec4f(4.532f, 45.67f, 0.83f, -44.6f);
+  v = v + Vec4f(0.3456f, 124.67f, 1.f, 9.f);
+  ASSERT_THAT(v, Vec4Near(Vec4f(4.8776f, 170.34f, 1.83f, -35.6f), eps));
 }
 
 TEST_F(Vector4Test, SubtractsTwoVectors) {
-  v = Vec4<double>(40.54, 2.4, 0.62, 0.);
-  v = v - Vec4<double>(4.20, -1.7, -1., -99.99999);
-  ASSERT_DOUBLE_EQ(v[0], 36.34);
-  ASSERT_DOUBLE_EQ(v[1], 4.1);
-  ASSERT_DOUBLE_EQ(v[2], 1.62);
-  ASSERT_DOUBLE_EQ(v[3], 99.99999);
+  v = Vec4f(40.54f, 2.4f, 0.62f, 0.f);
+  v = v - Vec4f(4.20f, -1.7f, -1.f, -99.99999f);
+  ASSERT_THAT(v, Vec4Near(Vec4f(36.34f, 4.1f, 1.62f, 99.99999f), eps));
 }
 
 TEST_F(Vector4Test, DevidesVectorByNumber) {
-  v = Vec4<double>(36.6, -30.6, 120.2586, -0.5555555);
-  v = v / 3.;
-  ASSERT_DOUBLE_EQ(v.x(), 36.6 / 3.);
-  ASSERT_DOUBLE_EQ(v.y(), -30.6 / 3.);
-  ASSERT_DOUBLE_EQ(v.z(), 120.2586 / 3.);
-  ASSERT_DOUBLE_EQ(v.w(), -0.5555555 / 3.);
+  v = Vec4f(36.6f, -30.6f, 120.2586f, -0.5555555f);
+  v = v / 3.f;
+  ASSERT_THAT(v, Eq(Vec4f(36.6f / 3.f, -30.6f / 3.f, 120.2586f / 3.f,
+                          -0.5555555f / 3.f)));
 }
 
 TEST_F(Vector4Test, DevidesVectorByVector) {
-  v = Vec4<double>(434.5, 93.5, 3858.53, -0.99999999);
-  v = v / Vec4<double>(32.5, -16.2, 0.567, -999.99999999);
-  ASSERT_DOUBLE_EQ(v.x(), 434.5 / 32.5);
-  ASSERT_DOUBLE_EQ(v.y(), -93.5 / 16.2);
-  ASSERT_DOUBLE_EQ(v.z(), 3858.53 / 0.567);
-  ASSERT_DOUBLE_EQ(v[3], -0.99999999 / (-999.99999999));
+  v = Vec4f(434.5f, 93.5, 3858.53f, -0.99999999f);
+  v = v / Vec4f(32.5f, -16.2f, 0.567f, -999.99999999f);
+  ASSERT_THAT(v, Eq(Vec4f(434.5f / 32.5f, -93.5f / 16.2f, 3858.53f / 0.567f,
+                          -0.99999999f / (-999.99999999f))));
 }
 
 TEST_F(Vector4Test, TestsEquality) {
-  v = Vec4<double>(4.2, -6.54, 34855.38596, -0.9938375);
-  ASSERT_TRUE(v == Vec4<double>(4.2, -6.54, 34855.38596, -0.9938375));
+  v = Vec4f(4.2f, -6.54f, 34855.38596f, -0.9938375f);
+  ASSERT_THAT(v, Eq(Vec4f(4.2f, -6.54f, 34855.38596f, -0.9938375f)));
 }
 
 TEST_F(Vector4Test, TestsInequality) {
-  v = Vec4<double>(4.2, -6.54, 0.0, 100.);
-  ASSERT_TRUE(v != Vec4<double>(4.2, -4.36, 0.0, 100.));
+  v = Vec4f(4.2, -6.54, 0.0, 100.);
+  ASSERT_THAT(v, testing::Ne(Vec4f(4.2f, -4.36f, 0.0f, 100.f)));
 }

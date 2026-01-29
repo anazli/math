@@ -76,7 +76,7 @@ class Vec3 {
     m_z = static_cast<T>(m_z / l);
   }
 
-  float length() const {
+  auto length() const {
     return static_cast<T>(sqrt(x() * x() + y() * y() + z() * z()));
   }
 
@@ -186,7 +186,7 @@ Vec3<T> operator/(const Vec3<T>& v, T num) {
 //--------------------------------------------
 
 template <numeric T>
-T dot(const Vec3<T>& v1, const Vec3<T>& v2) {
+auto dot(const Vec3<T>& v1, const Vec3<T>& v2) {
   Vec3<T> v = v1 * v2;
   return v.x() + v.y() + v.z();
 }

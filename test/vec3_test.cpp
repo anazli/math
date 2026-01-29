@@ -22,7 +22,6 @@ class Vector3Test : public testing::Test {
 TEST_F(Vector3Test, CreatesVector) { ASSERT_THAT(v, Eq(Vec3f())); }
 
 TEST_F(Vector3Test, AssertsOutOfBounds) {
-  v = Vec3f(1.f, 2.f, 0.5f);
   EXPECT_THROW(v[3], std::out_of_range);
   ASSERT_THROW(v[-1], std::out_of_range);
 }

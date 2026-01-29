@@ -93,11 +93,6 @@ TEST_F(Vector2Test, AddsTwoVectors) {
 TEST_F(Vector2Test, SubtractsTwoVectors) {
   v = Vec2f(40.54f, 2.4f);
   v = v - Vec2f(4.20f, -1.7f);
-  // output of gtest
-  /*Expected: is equal to (36.34,4.1)
-  Actual: (36.34,4.1) (of type Vec2<float>)
-  ...might be a bug
-*/
   ASSERT_THAT(v, Vec2Near(Vec2f(36.34f, 4.1f), eps));
 }
 
