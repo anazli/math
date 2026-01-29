@@ -38,7 +38,7 @@ TEST_F(Point3Test, createsPoint) {
 TEST_F(Point3Test, subtractsPointFromPoint) {
   Point3D pf = Point3D(1, 0, 4);
   Point3D p1 = Point3D(0, 2, 4);
-  Vec3D v = p1 - pf;
+  Vec3f v = p1 - pf;
   ASSERT_EQ(v.x(), -1);
   ASSERT_EQ(v.y(), 2);
   ASSERT_EQ(v.z(), 0);

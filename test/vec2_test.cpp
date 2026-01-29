@@ -7,9 +7,14 @@ using testing::Eq;
 using testing::FloatEq;
 using testing::FloatNear;
 
+MATCHER_P2(Vec2Near, v, eps, "") {
+  return fabs(arg.x() - v.x()) < eps && fabs(arg.y() - v.y()) < eps;
+}
+
 class Vector2Test : public testing::Test {
  public:
   Vec2f v;
+  float eps = 1E-6f;
 };
 
 TEST_F(Vector2Test, CreatesVector) { ASSERT_THAT(v, Eq(Vec2f(0.f, 0.f))); }
@@ -44,7 +49,6 @@ TEST_F(Vector2Test, SubtractsVectorOrNumber) {
 }
 
 TEST_F(Vector2Test, GetsLenghtOfVector) {
-  auto eps = 1E-6f;
   auto v1 = Vec2f::create_unit_vec();
   auto v2 = Vec2f(3.f, 3.f);
   auto v3 = Vec2f(-5.f, -5.f);
@@ -86,7 +90,7 @@ TEST_F(Vector2Test, AddsTwoVectors) {
   ASSERT_THAT(v, Eq(Vec2f(4.8776f, 170.34f)));
 }
 
-TEST_F(Vector2Test, DISABLED_SubtractsTwoVectors) {
+TEST_F(Vector2Test, SubtractsTwoVectors) {
   v = Vec2f(40.54f, 2.4f);
   v = v - Vec2f(4.20f, -1.7f);
   // output of gtest
@@ -94,7 +98,7 @@ TEST_F(Vector2Test, DISABLED_SubtractsTwoVectors) {
   Actual: (36.34,4.1) (of type Vec2<float>)
   ...might be a bug
 */
-  ASSERT_THAT(v, Eq(Vec2f(36.34f, 4.1f)));
+  ASSERT_THAT(v, Vec2Near(Vec2f(36.34f, 4.1f), eps));
 }
 
 TEST_F(Vector2Test, DevidesVectorByNumber) {
