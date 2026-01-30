@@ -85,7 +85,7 @@ class Vec4 {
   void normalize() {
     auto l = length();
     if (l < std::numeric_limits<double>::epsilon()) {
-      throw std::runtime_error("Cannot normalize zero-length 4D vector");
+      l += static_cast<T>(1E-6);
     }
     m_x = static_cast<T>(m_x / l);
     m_y = static_cast<T>(m_y / l);
@@ -208,5 +208,9 @@ auto dot(const Vec4<T>& v1, const Vec4<T>& v2) {
 
 template <numeric T>
 Vec4<T> normalized(const Vec4<T>& v) {
-  return v / (v.length() + static_cast<T>(1.E-30));
+  auto l = v.length();
+  if (l < std::numeric_limits<double>::epsilon()) {
+    l += static_cast<T>(1E-6);
+  }
+  return v / static_cast<T>(l);
 }

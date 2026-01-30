@@ -69,7 +69,7 @@ class Vec3 {
   void normalize() {
     auto l = length();
     if (l < std::numeric_limits<double>::epsilon()) {
-      throw std::runtime_error("Cannot normalize zero-length 3D vector");
+      l += static_cast<T>(1E-6);
     }
     m_x = static_cast<T>(m_x / l);
     m_y = static_cast<T>(m_y / l);
@@ -203,7 +203,7 @@ template <numeric T>
 Vec3<T> normalized(const Vec3<T>& v) {
   auto l = v.length();
   if (l < std::numeric_limits<double>::epsilon()) {
-    throw std::runtime_error("Cannot normalize zero-length 3D vector");
+    l += static_cast<T>(1E-6);
   }
   return v / static_cast<T>(l);
 }

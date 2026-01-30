@@ -45,7 +45,7 @@ class Vec2 {
   void normalize() {
     auto l = length();
     if (l < std::numeric_limits<double>::epsilon()) {
-      throw std::runtime_error("Cannot normalize zero-length 2D vector");
+      l += static_cast<T>(1E-6);
     }
     m_x = static_cast<T>(m_x / l);
     m_y = static_cast<T>(m_y / l);
@@ -160,7 +160,7 @@ template <numeric T>
 Vec2<T> normalized(const Vec2<T>& v) {
   auto l = v.length();
   if (l < std::numeric_limits<double>::epsilon()) {
-    throw std::runtime_error("Cannot normalize zero-length 2D vector");
+    l += static_cast<T>(1E-6);
   }
   return Vec2<T>{static_cast<T>(v.x() / l), static_cast<T>(v.y() / l)};
 }
