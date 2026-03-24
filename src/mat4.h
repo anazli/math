@@ -4,6 +4,7 @@
 #include <cmath>
 #include <iostream>
 
+#include "constants.h"
 #include "mat3.h"
 #include "types.h"
 #include "vec4.h"
@@ -180,6 +181,7 @@ void Mat4<T>::Orient(const Vec3<T>& pos, const Vec3<T>& fwd,
   m_vec[2] = Vec4<T>(fwd.z(), left.z(), up.z(), pos.z());
   m_vec[3] = Vec4<T>(T{0}, T{0}, T{0}, T{1});
 }
+
 template <numeric T>
 void Mat4<T>::LookAt(const Vec3<T>& pos, const Vec3<T>& lookAt,
                      const Vec3<T>& up) {
@@ -360,4 +362,55 @@ template <numeric T>
 std::ostream& operator<<(std::ostream& out, const Mat4<T>& m) {
   out << "{" << m[0] << "," << m[1] << "," << m[2] << "," << m[3] << "}";
   return out;
+}
+
+inline Mat4f frustrum(float left, float right, float bottom, float top,
+                      float near, float far) {
+  if (left == right || top == bottom || near == far) {
+    assert(false);
+    return Mat4f();
+  }
+  auto v1 = Vec4f((2.f * near) / (right - left), 0.f, 0.f, 0.f);
+  auto v2 = Vec4f(0.f, (2.f * near) / (top - bottom), 0.f, 0.f);
+  auto v3 =
+      Vec4f((right + left) / (right - left), (top + bottom) / (top - bottom),
+            -(far + near) / (far - near), -1.f);
+  auto v4 = Vec4f(0.f, 0.f, (-2.f * far * near) / (far - near), 0.f);
+  return Mat4f(v1, v2, v3, v4);
+}
+
+inline Mat4f perspective(float fov, float aspect, float n, float f) {
+  auto ymax = n * tanf(fov * PI / RAD);
+  auto xmax = ymax * aspect;
+  return frustrum(-xmax, xmax, -ymax, ymax, n, f);
+}
+
+inline Mat4f orthographic(float left, float right, float bottom, float top,
+                          float near, float far) {
+  auto v1 = Vec4f(2.f / (right - left), 0.f, 0.f, 0.f);
+  auto v2 = Vec4f(0.f, 2.f / (top - bottom), 0.f, 0.f);
+  auto v3 = Vec4f(0.f, 0.f, -2.f / (far - near), 0.f);
+  auto v4 =
+      Vec4f(-(right + left) / (right - left), -(top + bottom) / (top - bottom),
+            -(far + near) / (far - near), 1);
+  return Mat4f(v1, v2, v3, v4);
+}
+
+template <typename T>
+Mat4<T> LookAt(const Vec3<T>& pos, const Vec3<T>& target, const Vec3<T>& up) {
+  Vec3<T> fwd = normalized(target - pos) * -1.f;
+  Vec3<T> right = cross(up, fwd);
+  if (right == Vec3f(0.f, 0.f, 0.f)) {
+    return Mat4<T>();  // Error
+  }
+  right.normalize();
+  auto up_norm = normalized(cross(fwd, right));
+
+  auto t = Vec3f(-dot(right, pos), -dot(up_norm, pos), -dot(fwd, pos));
+
+  auto v1 = Vec4f(right.x(), up_norm.x(), fwd.x(), 0.f);
+  auto v2 = Vec4f(right.y(), up_norm.y(), fwd.y(), 0.f);
+  auto v3 = Vec4f(right.z(), up_norm.z(), fwd.z(), 0.f);
+  auto v4 = Vec4f(t.x(), t.y(), t.z(), 1.f);
+  return Mat4<T>(v1, v2, v3, v4);
 }
