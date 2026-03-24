@@ -18,10 +18,11 @@ target_sources(math INTERFACE
     src/mat2.h
     src/mat3.h
     src/mat4.h
-    src/math.h
+    src/constants.h
     src/normal3.h
     src/orthonormal.h
     src/point3.h
+    src/quat.h
     src/ray.h
     src/types.h
     src/vec2.h

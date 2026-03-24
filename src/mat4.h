@@ -95,7 +95,9 @@ class Mat4 {
   Vec4<T> m_vec[4];
 };
 
-using Mat4D = Mat4<float>;
+using Mat4i = Mat4<int>;
+using Mat4f = Mat4<float>;
+using Mat4d = Mat4<double>;
 
 template <numeric T>
 T Mat4<T>::trace() const {
@@ -343,7 +345,7 @@ Mat4<T> view_transform(const Point3<T>& from, const Point3<T>& to,
   Vec3<T> left = cross(forward, up_norm);
   Vec3<T> up_res = cross(left, forward);
 
-  Mat4D orientation =
+  Mat4<T> orientation =
       Mat4D(Vec4<T>(left.x(), left.y(), left.z(), 0.0f),
             Vec4<T>(up_res.x(), up_res.y(), up_res.z(), 0.0f),
             Vec4<T>(-forward.x(), -forward.y(), -forward.z(), 0.0f),
