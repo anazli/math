@@ -30,7 +30,6 @@ target_sources(math INTERFACE
     src/vec4.h
 )
 
-option(ENABLE_TESTING "Enable tests" ON)
 if(ENABLE_TESTING)
   enable_testing()
   add_subdirectory(test)
