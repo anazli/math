@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.21)
 project(math LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -30,7 +30,15 @@ target_sources(math INTERFACE
     src/vec4.h
 )
 
-if(ENABLE_TESTING)
+if(PROJECT_IS_TOP_LEVEL)
+  set(ENABLE_UNIT_TESTS_DEFAULT ON)
+else()
+  set(ENABLE_UNIT_TESTS_DEFAULT OFF)
+endif()
+
+option(MATH_BUILD_TESTS "Build unit tests for Math" ${ENABLE_UNIT_TESTS_DEFAULT})
+
+if(MATH_BUILD_TESTS)
   enable_testing()
   add_subdirectory(test)
 endif()
