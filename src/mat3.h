@@ -100,7 +100,11 @@ Mat2<T> Mat3<T>::minor(int i, int j) const {
     int xx = 0;
     for (int x = 0; x < 3; x++) {
       if (x == i) continue;
-      mi[xx][yy] = m_vec[x][y];
+      if (yy == 0) {
+        mi[xx].x = m_vec[x][y];
+      } else {
+        mi[xx].y = m_vec[x][y];
+      }
       xx++;
     }
     yy++;

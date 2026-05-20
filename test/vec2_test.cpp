@@ -8,7 +8,7 @@ using testing::FloatEq;
 using testing::FloatNear;
 
 MATCHER_P2(Vec2Near, v, eps, "") {
-  return fabs(arg.x() - v.x()) < eps && fabs(arg.y() - v.y()) < eps;
+  return fabs(arg.x - v.x) < eps && fabs(arg.y - v.y) < eps;
 }
 
 class Vector2Test : public testing::Test {
@@ -19,14 +19,10 @@ class Vector2Test : public testing::Test {
 
 TEST_F(Vector2Test, CreatesVector) { ASSERT_THAT(v, Eq(Vec2f(0.f, 0.f))); }
 
-TEST_F(Vector2Test, ThrowsOutOfBounds) {
-  EXPECT_THROW(v[2], std::out_of_range);
-  EXPECT_THROW(v[-1], std::out_of_range);
-}
-
 TEST_F(Vector2Test, AsignsNegative) {
   auto n = -1.55f;
-  v.set(n);
+  v.x = n;
+  v.y = n;
   v = -v;
   ASSERT_THAT(v, Eq(Vec2f(-n, -n)));
 }

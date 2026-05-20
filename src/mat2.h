@@ -14,8 +14,10 @@ class Mat2 {
  public:
   Mat2() = default;
   Mat2(T num) {
-    m_vec[0].set(num);
-    m_vec[1].set(num);
+    m_vec[0].x = num;
+    m_vec[0].y = num;
+    m_vec[1].x = num;
+    m_vec[1].y = num;
   }
   Mat2(const Vec2<T>& row1, const Vec2<T>& row2) {
     m_vec[0] = row1;
@@ -35,7 +37,7 @@ class Mat2 {
   }
 
   double determinant() const {
-    return m_vec[0].x() * m_vec[1].y() - m_vec[0].y() * m_vec[1].x();
+    return m_vec[0].x * m_vec[1].y - m_vec[0].y * m_vec[1].x;
   }
 
  private:
@@ -72,10 +74,10 @@ Mat2<T> operator*(const Mat2<T>& m1, T num) {
 template <numeric T>
 Mat2<T> operator*(const Mat2<T>& m1, const Mat2<T>& m2) {
   Mat2<T> ret;
-  ret[0][0] = m1[0][0] * m2[0][0] + m1[0][1] * m2[1][0];
-  ret[0][1] = m1[0][0] * m2[0][1] + m1[0][1] * m2[1][1];
-  ret[1][0] = m1[1][0] * m2[0][0] + m1[1][1] * m2[1][0];
-  ret[1][1] = m1[1][0] * m2[0][1] + m1[1][1] * m2[1][1];
+  ret[0].x = m1[0].x * m2[0].x + m1[0].y * m2[1].x;
+  ret[0].y = m1[0].x * m2[0].y + m1[0].y * m2[1].y;
+  ret[1].x = m1[1].x * m2[0].x + m1[1].y * m2[1].x;
+  ret[1].y = m1[1].x * m2[0].y + m1[1].y * m2[1].y;
 
   return ret;
 }

@@ -10,7 +10,12 @@ include(GoogleTest)
 
 set(TEST_EXECUTABLE math-tests)
 
-file(GLOB TEST_SOURCES "*.cpp")
-add_executable(${TEST_EXECUTABLE} ${TEST_SOURCES})
+add_executable(${TEST_EXECUTABLE} mat2_test.cpp
+                                  mat3_test.cpp
+                                  mat4_test.cpp
+                                  point3_test.cpp
+                                  vec2_test.cpp
+                                  vec3_test.cpp
+                                  vec4_test.cpp)
 target_link_libraries(${TEST_EXECUTABLE} PRIVATE math gtest_main gtest gmock)
 gtest_discover_tests(${TEST_EXECUTABLE})
