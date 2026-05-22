@@ -176,9 +176,9 @@ template <numeric T>
 void Mat4<T>::Orient(const Vec3<T>& pos, const Vec3<T>& fwd,
                      const Vec3<T>& up) {
   Vec3<T> left = up.cross(fwd);
-  m_vec[0] = Vec4<T>(fwd.x(), left.x(), up.x(), pos.x());
-  m_vec[1] = Vec4<T>(fwd.y(), left.y(), up.y(), pos.y());
-  m_vec[2] = Vec4<T>(fwd.z(), left.z(), up.z(), pos.z());
+  m_vec[0] = Vec4<T>(fwd.x, left.x, up.x, pos.x);
+  m_vec[1] = Vec4<T>(fwd.y, left.y, up.y, pos.y);
+  m_vec[2] = Vec4<T>(fwd.z, left.z, up.z, pos.z);
   m_vec[3] = Vec4<T>(T{0}, T{0}, T{0}, T{1});
 }
 
@@ -194,9 +194,9 @@ void Mat4<T>::LookAt(const Vec3<T>& pos, const Vec3<T>& lookAt,
   up = fwd.cross(right);
   up.normalize();
 
-  m_vec[0] = Vec4<T>(right.x(), right.y(), right.z(), -dot(pos, right));
-  m_vec[1] = Vec4<T>(up.x(), up.y(), up.z(), -dot(pos, up));
-  m_vec[2] = Vec4<T>(fwd.x(), fwd.y(), fwd.z(), -dot(pos, fwd));
+  m_vec[0] = Vec4<T>(right.x, right.y, right.z, -dot(pos, right));
+  m_vec[1] = Vec4<T>(up.x, up.y, up.z, -dot(pos, up));
+  m_vec[2] = Vec4<T>(fwd.x, fwd.y, fwd.z, -dot(pos, fwd));
   m_vec[3] = Vec4<T>(T{0}, T{0}, T{0}, T{1});
 }
 
@@ -278,9 +278,9 @@ template <numeric T>
 Mat4<T> translation(const Vec3<T>& v) {
   Mat4<T> ret;
   ret.identity();
-  ret[0][3] = v.x();
-  ret[1][3] = v.y();
-  ret[2][3] = v.z();
+  ret[0][3] = v.x;
+  ret[1][3] = v.y;
+  ret[2][3] = v.z;
   return ret;
 }
 
@@ -298,9 +298,9 @@ template <numeric T>
 Mat4<T> scale(const Vec3<T>& v) {
   Mat4<T> ret;
   ret.identity();
-  ret[0][0] = v.x();
-  ret[1][1] = v.y();
-  ret[2][2] = v.z();
+  ret[0][0] = v.x;
+  ret[1][1] = v.y;
+  ret[2][2] = v.z;
   return ret;
 }
 
@@ -347,13 +347,12 @@ Mat4<T> view_transform(const Point3<T>& from, const Point3<T>& to,
   Vec3<T> left = cross(forward, up_norm);
   Vec3<T> up_res = cross(left, forward);
 
-  Mat4<T> orientation =
-      Mat4D(Vec4<T>(left.x(), left.y(), left.z(), 0.0f),
-            Vec4<T>(up_res.x(), up_res.y(), up_res.z(), 0.0f),
-            Vec4<T>(-forward.x(), -forward.y(), -forward.z(), 0.0f),
-            Vec4<T>(0.0f, 0.0f, 0.0f, 1.0f));
+  Mat4<T> orientation = Mat4D(Vec4<T>(left.x, left.y, left.z, 0.0f),
+                              Vec4<T>(up_res.x, up_res.y, up_res.z, 0.0f),
+                              Vec4<T>(-forward.x, -forward.y, -forward.z, 0.0f),
+                              Vec4<T>(0.0f, 0.0f, 0.0f, 1.0f));
 
-  return orientation * translation(-from.x(), -from.y(), -from.z());
+  return orientation * translation(-from.x, -from.y, -from.z);
 }
 
 // TODO: Shearing
@@ -408,9 +407,9 @@ Mat4<T> LookAt(const Vec3<T>& pos, const Vec3<T>& target, const Vec3<T>& up) {
 
   auto t = Vec3f(-dot(right, pos), -dot(up_norm, pos), -dot(fwd, pos));
 
-  auto v1 = Vec4f(right.x(), up_norm.x(), fwd.x(), 0.f);
-  auto v2 = Vec4f(right.y(), up_norm.y(), fwd.y(), 0.f);
-  auto v3 = Vec4f(right.z(), up_norm.z(), fwd.z(), 0.f);
-  auto v4 = Vec4f(t.x(), t.y(), t.z(), 1.f);
+  auto v1 = Vec4f(right.x, up_norm.x, fwd.x, 0.f);
+  auto v2 = Vec4f(right.y, up_norm.y, fwd.y, 0.f);
+  auto v3 = Vec4f(right.z, up_norm.z, fwd.z, 0.f);
+  auto v4 = Vec4f(t.x, t.y, t.z, 1.f);
   return Mat4<T>(v1, v2, v3, v4);
 }

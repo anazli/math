@@ -22,9 +22,15 @@ class Mat3 {
     m_vec[2] = Vec3<T>(T{0}, T{0}, T{1});
   }
   Mat3(T num) {
-    m_vec[0].set(num);
-    m_vec[1].set(num);
-    m_vec[2].set(num);
+    m_vec[0].x = num;
+    m_vec[0].y = num;
+    m_vec[0].z = num;
+    m_vec[1].x = num;
+    m_vec[1].y = num;
+    m_vec[1].z = num;
+    m_vec[2].x = num;
+    m_vec[2].y = num;
+    m_vec[2].z = num;
   }
   Mat3(const Vec3<T>& row1, const Vec3<T>& row2, const Vec3<T>& row3) {
     m_vec[0] = row1;

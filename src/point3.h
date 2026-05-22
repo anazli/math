@@ -17,65 +17,49 @@ template <numeric T>
 class Point3 {
  public:
   Point3() = default;
-  Point3(T x, T y, T z) : m_x{x}, m_y{y}, m_z{z} {}
-  explicit Point3(const Vec4<T> &v) : m_x{v.x()}, m_y{v.y()}, m_z{v.z()} {}
-  explicit Point3(const Vec3<T> &v) : m_x{v.x()}, m_y{v.y()}, m_z{v.z()} {}
-  explicit Point3(const Normal3<T> &n) : m_x{n.x()}, m_y{n.y()}, m_z{n.z()} {}
+  Point3(T x, T y, T z) : x{x}, y{y}, z{z} {}
+  explicit Point3(const Vec4<T> &v) : x{v.x}, y{v.y}, z{v.z} {}
+  explicit Point3(const Vec3<T> &v) : x{v.x}, y{v.y}, z{v.z} {}
+  explicit Point3(const Normal3<T> &n) : x{n.x}, y{n.y}, z{n.z} {}
 
-  T x() const { return m_x; }
-  T y() const { return m_y; }
-  T z() const { return m_z; }
-
-  void x(T x) { m_x = x; }
-  void y(T y) { m_y = y; }
-  void z(T z) { m_z = z; }
-  void set(T n) { m_x = m_y = m_z = n; }
-
-  T operator[](int i) const {
-    if (i < 0 || i > 2) throw std::out_of_range("Index out of range");
-    if (i == 0) return m_x;
-    if (i == 1) return m_y;
-    return m_z;
-  }
-
-  T &operator[](int i) {
-    if (i < 0 || i > 2) throw std::out_of_range("Index out of range");
-    if (i == 0) return m_x;
-    if (i == 1) return m_y;
-    return m_z;
+  void set(T n) { x = y = z = n; }
+  void set(T xVal, T yVal, T zVal) {
+    x = xVal;
+    y = yVal;
+    z = zVal;
   }
 
   Point3<T> &operator=(const Vec4<T> &vec4) {
-    m_x = vec4.x();
-    m_y = vec4.y();
-    m_z = vec4.z();
+    x = vec4.x;
+    y = vec4.y;
+    z = vec4.z;
     return *this;
   }
 
   auto operator<=>(const Point3<T> &) const = default;
 
   Point3<T> operator+(const Vec3<T> &v) const {
-    return Point3<T>(m_x + v.x(), m_y + v.y(), m_z + v.z());
+    return Point3<T>(x + v.x, y + v.y, z + v.z);
   }
 
   Vec3<T> operator+(const Point3<T> &p) const {
-    return Vec3<T>(m_x + p.m_x, m_y + p.m_y, m_z + p.m_z);
+    return Vec3<T>(x + p.x, y + p.y, z + p.z);
   }
 
   Point3<T> operator-(const Vec3<T> &v) const {  // Point - Vector = Point
-    return Point3<T>(m_x - v.x(), m_y - v.y(), m_z - v.z());
+    return Point3<T>(x - v.x, y - v.y, z - v.z);
   }
 
   Vec3<T> operator-(const Point3<T> &p) const {  // Point - Point = Vector
-    return Vec3<T>(m_x - p.m_x, m_y - p.m_y, m_z - p.m_z);
+    return Vec3<T>(x - p.x, y - p.y, z - p.z);
   }
 
   bool is_zero() const { return *this == Point3<T>(T{0}, T{0}, T{0}); }
 
- private:
-  T m_x = T{0};
-  T m_y = T{0};
-  T m_z = T{0};
+ public:
+  T x = T{0};
+  T y = T{0};
+  T z = T{0};
 };
 
 using Point3i = Point3<int>;
@@ -88,13 +72,13 @@ using Point3d = Point3<double>;
 
 template <numeric T>
 std::stringstream &operator<<(std::stringstream &out, const Point3<T> &p) {
-  out << "(" << p.x() << "," << p.y() << "," << p.z() << ")";
+  out << "(" << p.x << "," << p.y << "," << p.z << ")";
   return out;
 }
 
 template <numeric T>
 std::ostream &operator<<(std::ostream &out, const Point3<T> &p) {
-  out << "(" << p.x() << "," << p.y() << "," << p.z() << ")";
+  out << "(" << p.x << "," << p.y << "," << p.z << ")";
   return out;
 }
 
@@ -104,22 +88,22 @@ std::ostream &operator<<(std::ostream &out, const Point3<T> &p) {
 
 template <numeric T>
 Vec3<T> operator-(const Vec3<T> &v, const Point3<T> &p) {
-  return Vec3<T>(v.x() - p.x(), v.y() - p.y(), v.z() - p.z());
+  return Vec3<T>(v.x - p.x, v.y - p.y, v.z - p.z);
 }
 
 template <numeric T>
 Vec3<T> operator+(const Vec3<T> &v, const Point3<T> &p) {
-  return Vec3<T>(v.x() + p.x(), v.y() + p.y(), v.z() + p.z());
+  return Vec3<T>(v.x + p.x, v.y + p.y, v.z + p.z);
 }
 
 template <numeric T>
 Point3<T> operator+(const Point3<T> &p, T num) {
-  return Point3<T>(p.x() + num, p.y() + num, p.z() + num);
+  return Point3<T>(p.x + num, p.y + num, p.z + num);
 }
 
 template <numeric T>
 Point3<T> operator*(const Point3<T> &p, T num) {
-  return Point3<T>(p.x() * num, p.y() * num, p.z() * num);
+  return Point3<T>(p.x * num, p.y * num, p.z * num);
 }
 
 template <numeric T>

@@ -14,13 +14,13 @@ class OrthoNormalBasis {
   }
 
   Vec3f local(const Vec3f& a) const {
-    return a.x() * m_u + a.y() * m_v + a.z() * m_w;
+    return a.x * m_u + a.y * m_v + a.z * m_w;
   }
 
   void buildFromW(const Vec3f& w) {
     auto unit_w = normalized(w);
     auto a =
-        (fabs(unit_w.x()) > 0.9f) ? Vec3f(0.f, 1.f, 0.f) : Vec3f(1.f, 0.f, 0.f);
+        (fabs(unit_w.x) > 0.9f) ? Vec3f(0.f, 1.f, 0.f) : Vec3f(1.f, 0.f, 0.f);
     auto v = normalized(cross(unit_w, a));
     auto u = cross(unit_w, v);
     m_u = u;

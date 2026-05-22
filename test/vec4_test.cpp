@@ -7,8 +7,8 @@ using testing::Eq;
 using testing::FloatEq;
 
 MATCHER_P2(Vec4Near, v, eps, "") {
-  return fabs(arg.x() - v.x()) < eps && fabs(arg.y() - v.y()) < eps &&
-         fabs(arg.z() - v.z()) < eps && fabs(arg.w() - v.w()) < eps;
+  return fabs(arg.x - v.x) < eps && fabs(arg.y - v.y) < eps &&
+         fabs(arg.z - v.z) < eps && fabs(arg.w - v.w) < eps;
 }
 
 class Vector4Test : public testing::Test {
@@ -25,10 +25,10 @@ TEST_F(Vector4Test, AssertsOutOfBounds) {
 }
 
 TEST_F(Vector4Test, SetsCoords) {
-  v.x(5.f);
+  v.x = 5.f;
   v[1] = 4.f;
   v[2] = 0.2f;
-  v.w(-5.2f);
+  v.w = -5.2f;
   ASSERT_THAT(v, Eq(Vec4f(5.f, 4.f, 0.2f, -5.2f)));
 }
 

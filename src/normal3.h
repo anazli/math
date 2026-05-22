@@ -20,59 +20,36 @@ template <numeric T>
 class Normal3 {
  public:
   Normal3() = default;
-  Normal3(T p1, T p2, T p3) : m_x{p1}, m_y{p2}, m_z{p3} {}
-  explicit Normal3(const Vec4<T>& v) : m_x{v.x()}, m_y{v.y()}, m_z{v.z()} {}
-  explicit Normal3(const Point3<T>& p) : m_x{p.x()}, m_y{p.y()}, m_z{p.z()} {}
-  explicit Normal3(const Vec3<T>& v) : m_x{v.x()}, m_y{v.y()}, m_z{v.z()} {}
+  Normal3(T p1, T p2, T p3) : x{p1}, y{p2}, z{p3} {}
+  explicit Normal3(const Vec4<T>& v) : x{v.x}, y{v.y}, z{v.z} {}
+  explicit Normal3(const Point3<T>& p) : x{p.x}, y{p.y}, z{p.z} {}
+  explicit Normal3(const Vec3<T>& v) : x{v.x}, y{v.y}, z{v.z} {}
 
-  T x() const { return m_x; }
-  T y() const { return m_y; }
-  T z() const { return m_z; }
-
-  void x(T x) { m_x = x; }
-  void y(T y) { m_y = y; }
-  void z(T z) { m_z = z; }
-  void set(T n) { m_x = m_y = m_z = n; }
-  void set(T x, T y, T z) {
-    m_x = x;
-    m_y = y;
-    m_z = z;
-  }
-
-  T operator[](int i) const {
-    assert(i >= 0 && i <= 2);
-    if (i == 0) return m_x;
-    if (i == 1) return m_y;
-    return m_z;
-  }
-
-  T& operator[](int i) {
-    assert(i >= 0 && i <= 2);
-    if (i == 0) return m_x;
-    if (i == 1) return m_y;
-    return m_z;
+  void set(T n) { x = y = z = n; }
+  void set(T xVal, T yVal, T zVal) {
+    x = xVal;
+    y = yVal;
+    z = zVal;
   }
 
   Normal3<T>& operator=(const Vec4<T>& v) {
-    m_x = v.x();
-    m_y = v.y();
-    m_z = v.z();
+    x = v.x;
+    y = v.y;
+    z = v.z;
     return *this;
   }
 
   auto operator<=>(const Normal3<T>&) const = default;
 
-  Normal3<T> operator+() const { return Normal3<T>(m_x, m_y, m_z); };
-  Normal3<T> operator-() const { return Normal3<T>(-m_x, -m_y, -m_z); }
+  Normal3<T> operator+() const { return Normal3<T>(x, y, z); };
+  Normal3<T> operator-() const { return Normal3<T>(-x, -y, -z); }
 
-  auto length() const {
-    return static_cast<T>(sqrt(x() * x() + y() * y() + z() * z()));
-  }
+  auto length() const { return static_cast<T>(sqrt(x * x + y * y + z * z)); }
 
- private:
-  T m_x = T{1};
-  T m_y = T{1};
-  T m_z = T{1};
+ public:
+  T x = T{1};
+  T y = T{1};
+  T z = T{1};
 };
 
 using Normal3i = Normal3<int>;
@@ -93,7 +70,7 @@ inline std::istream& operator>>(std::istream& in, Normal3<T>& n) {
 
 template <numeric T>
 inline std::ostream& operator<<(std::ostream& out, const Normal3<T>& n) {
-  out << "(" << n.x() << "," << n.y() << "," << n.z() << ")" << std::endl;
+  out << "(" << n.x << "," << n.y << "," << n.z << ")" << std::endl;
   return out;
 }
 
@@ -103,22 +80,22 @@ inline std::ostream& operator<<(std::ostream& out, const Normal3<T>& n) {
 
 template <numeric T>
 Normal3<T> operator+(const Normal3<T>& n1, const Normal3<T>& n2) {
-  return Normal3<T>(n1.x() + n2.x(), n1.y() + n2.y(), n1.z() + n2.z());
+  return Normal3<T>(n1.x + n2.x, n1.y + n2.y, n1.z + n2.z);
 }
 
 template <numeric T>
-Normal3<T> operator+(const Normal3<T>& n, const Vec3<T>& v) {
-  return Vec3<T>(n.x() + v.x(), n.y() + v.y(), n.z() + v.z());
+Vec3<T> operator+(const Normal3<T>& n, const Vec3<T>& v) {
+  return Vec3<T>(n.x + v.x, n.y + v.y, n.z + v.z);
 }
 
 template <numeric T>
-Normal3<T> operator+(const Vec3<T>& v, const Normal3<T>& n) {
+Vec3<T> operator+(const Vec3<T>& v, const Normal3<T>& n) {
   return n + v;
 }
 
 template <numeric T>
 Normal3<T> operator+(const Normal3<T>& n, T num) {
-  return Normal3<T>(n.x() + num, n.y() + num, n.z() + num);
+  return Normal3<T>(n.x + num, n.y + num, n.z + num);
 }
 
 template <numeric T>
@@ -128,12 +105,12 @@ Normal3<T> operator+(T num, const Normal3<T>& v) {
 
 template <numeric T>
 Normal3<T> operator-(const Normal3<T>& n1, const Normal3<T>& n2) {
-  return Normal3<T>(n1.x() - n2.x(), n1.y() - n2.y(), n1.z() - n2.z());
+  return Normal3<T>(n1.x - n2.x, n1.y - n2.y, n1.z - n2.z);
 }
 
 template <numeric T>
 Normal3<T> operator-(const Normal3<T>& n, T num) {
-  return Normal3<T>(n.x() - num, n.y() - num, n.z() - num);
+  return Normal3<T>(n.x - num, n.y - num, n.z - num);
 }
 
 template <numeric T>
@@ -143,12 +120,12 @@ Normal3<T> operator-(T num, const Normal3<T>& n) {
 
 template <numeric T>
 Normal3<T> operator*(const Normal3<T>& n1, const Normal3<T>& n2) {
-  return Normal3<T>(n1.x() * n2.x(), n1.y() * n2.y(), n1.z() * n2.z());
+  return Normal3<T>(n1.x * n2.x, n1.y * n2.y, n1.z * n2.z);
 }
 
 template <numeric T>
 Normal3<T> operator*(const Normal3<T>& n, const Vec3<T>& v) {
-  return Normal3<T>(n.x() * v.x(), n.y() * v.y(), n.z() * v.z());
+  return Normal3<T>(n.x * v.x, n.y * v.y, n.z * v.z);
 }
 
 template <numeric T>
@@ -158,7 +135,7 @@ Normal3<T> operator*(const Vec3<T>& v, const Normal3<T>& n) {
 
 template <numeric T>
 Normal3<T> operator*(const Normal3<T>& n, T num) {
-  return Normal3<T>(n.x() * num, n.y() * num, n.z() * num);
+  return Normal3<T>(n.x * num, n.y * num, n.z * num);
 }
 
 template <numeric T>
@@ -169,25 +146,25 @@ Normal3<T> operator*(T num, const Normal3<T>& n) {
 template <numeric T>
 Normal3<T> operator/(const Normal3<T>& n1, const Normal3<T>& n2) {
   auto d = n2 + static_cast<T>(1.E-30);
-  return Normal3<T>(n1.x() / d.x(), n1.y() / d.y(), n1.z() / d.z());
+  return Normal3<T>(n1.x / d.x, n1.y / d.y, n1.z / d.z);
 }
 
 template <numeric T>
 Normal3<T> operator/(const Normal3<T>& n, T num) {
   num += 1.E-30;
-  return Normal3<T>(n.x() / num, n.y() / num, n.z() / num);
+  return Normal3<T>(n.x / num, n.y / num, n.z / num);
 }
 
 template <numeric T>
 T dot(const Normal3<T>& n1, const Normal3<T>& n2) {
   Normal3<T> n = n1 * n2;
-  return n.x() + n.y() + n.z();
+  return n.x + n.y + n.z;
 }
 
 template <numeric T>
 T dot(const Normal3<T>& n, const Vec3<T>& v) {
   Normal3<T> u = n * v;
-  return u.x() + u.y() + u.z();
+  return u.x + u.y + u.z;
 }
 
 template <numeric T>

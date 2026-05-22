@@ -9,8 +9,8 @@ using testing::FloatNear;
 using testing::Ne;
 
 MATCHER_P2(Vec3Near, v, eps, "") {
-  return fabs(arg.x() - v.x()) < eps && fabs(arg.y() - v.y()) < eps &&
-         fabs(arg.z() - v.z()) < eps;
+  return fabs(arg.x - v.x) < eps && fabs(arg.y - v.y) < eps &&
+         fabs(arg.z - v.z) < eps;
 }
 
 class Vector3Test : public testing::Test {
@@ -27,14 +27,16 @@ TEST_F(Vector3Test, AssertsOutOfBounds) {
 }
 
 TEST_F(Vector3Test, SetsCoords) {
-  v.x(5.);
-  v[1] = 4.;
-  v[2] = 0.2;
+  v.x = 5.f;
+  v.y = 4.f;
+  v.z = 0.2f;
   ASSERT_THAT(v, Eq(Vec3f(5.f, 4.f, 0.2f)));
 }
 
 TEST_F(Vector3Test, ChangesSign) {
-  v.set(-1.55);
+  v.x = -1.55f;
+  v.y = -1.55f;
+  v.z = -1.55f;
   v = -v;
   ASSERT_THAT(v, Eq(Vec3f(1.55f, 1.55f, 1.55f)));
 }
