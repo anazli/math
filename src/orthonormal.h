@@ -4,20 +4,20 @@
 
 class OrthoNormalBasis {
  public:
-  OrthoNormalBasis() = default;
-  Vec3f u() const { return m_u; }
-  Vec3f v() const { return m_v; }
-  Vec3f w() const { return m_w; }
+  constexpr OrthoNormalBasis() = default;
+  constexpr Vec3f u() const { return m_u; }
+  constexpr Vec3f v() const { return m_v; }
+  constexpr Vec3f w() const { return m_w; }
 
-  Vec3f local(float a, float b, float c) const {
+  constexpr Vec3f local(float a, float b, float c) const {
     return a * m_u + b * m_v + c * m_w;
   }
 
-  Vec3f local(const Vec3f& a) const {
+  constexpr Vec3f local(const Vec3f& a) const {
     return a.x * m_u + a.y * m_v + a.z * m_w;
   }
 
-  void buildFromW(const Vec3f& w) {
+  constexpr void buildFromW(const Vec3f& w) {
     auto unit_w = normalized(w);
     auto a =
         (fabs(unit_w.x) > 0.9f) ? Vec3f(0.f, 1.f, 0.f) : Vec3f(1.f, 0.f, 0.f);

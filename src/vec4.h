@@ -20,23 +20,25 @@ class Normal3;
 template <numeric T>
 class Vec4 {
  public:
-  Vec4() = default;
-  Vec4(T p1, T p2, T p3, T p4) : x{p1}, y{p2}, z{p3}, w{p4} {}
-  explicit Vec4(const Vec3<T>& v) : x{v.x}, y{v.y}, z{v.z}, w{0} {}
-  explicit Vec4(const Point3<T>& p) : x{p.x}, y{p.y}, z{p.z}, w{1} {}
-  explicit Vec4(const Normal3<T>& n) : x{n.x}, y{n.y}, z{n.z}, w{0} {}
+  constexpr Vec4() = default;
+  constexpr Vec4(T p1, T p2, T p3, T p4) : x{p1}, y{p2}, z{p3}, w{p4} {}
+  constexpr explicit Vec4(const Vec3<T>& v) : x{v.x}, y{v.y}, z{v.z}, w{0} {}
+  constexpr explicit Vec4(const Point3<T>& p) : x{p.x}, y{p.y}, z{p.z}, w{1} {}
+  constexpr explicit Vec4(const Normal3<T>& n) : x{n.x}, y{n.y}, z{n.z}, w{0} {}
 
-  static Vec4<T> create_unit_vec() { return Vec4<T>(T{1}, T{1}, T{1}, T{1}); }
+  static constexpr Vec4<T> create_unit_vec() {
+    return Vec4<T>(T{1}, T{1}, T{1}, T{1});
+  }
 
-  void set(T n) { x = y = z = w = n; }
-  void set(T xVal, T yVal, T zVal, T wVal) {
+  constexpr void set(T n) { x = y = z = w = n; }
+  constexpr void set(T xVal, T yVal, T zVal, T wVal) {
     x = xVal;
     y = yVal;
     z = zVal;
     w = wVal;
   }
 
-  T operator[](int i) const {
+  constexpr T operator[](int i) const {
     if (i < 0 || i > 3) throw std::out_of_range("Index out of range");
     if (i == 0) return x;
     if (i == 1) return y;
@@ -44,7 +46,7 @@ class Vec4 {
     return w;
   }
 
-  T& operator[](int i) {
+  constexpr T& operator[](int i) {
     if (i < 0 || i > 3) throw std::out_of_range("Index out of range");
     if (i == 0) return x;
     if (i == 1) return y;
@@ -52,7 +54,7 @@ class Vec4 {
     return w;
   }
 
-  Vec4<T>& operator=(const Vec3<T>& v) {
+  constexpr Vec4<T>& operator=(const Vec3<T>& v) {
     x = v.x;
     y = v.y;
     z = v.z;
@@ -60,7 +62,7 @@ class Vec4 {
     return *this;
   }
 
-  Vec4<T>& operator=(const Point3<T>& p) {
+  constexpr Vec4<T>& operator=(const Point3<T>& p) {
     x = p.x;
     y = p.y;
     z = p.z;
@@ -68,12 +70,12 @@ class Vec4 {
     return *this;
   }
 
-  auto operator<=>(const Vec4<T>&) const = default;
+  constexpr auto operator<=>(const Vec4<T>&) const = default;
 
-  Vec4<T> operator+() const { return Vec4<T>(x, y, z, w); };
-  Vec4<T> operator-() const { return Vec4<T>(-x, -y, -z, -w); }
+  constexpr Vec4<T> operator+() const { return Vec4<T>(x, y, z, w); };
+  constexpr Vec4<T> operator-() const { return Vec4<T>(-x, -y, -z, -w); }
 
-  void normalize() {
+  constexpr void normalize() {
     auto l = length();
     if (l < std::numeric_limits<double>::epsilon()) {
       l += static_cast<T>(1E-6);
@@ -84,13 +86,15 @@ class Vec4 {
     w = static_cast<T>(w / l);
   }
 
-  auto length() const {
+  constexpr auto length() const {
     return static_cast<T>(sqrt(x * x + y * y + z * z + w * w));
   }
 
-  bool is_zero() const { return *this == Vec4<T>(T{0}, T{0}, T{0}, T{0}); }
+  constexpr bool is_zero() const {
+    return *this == Vec4<T>(T{0}, T{0}, T{0}, T{0});
+  }
 
-  void zero() {
+  constexpr void zero() {
     x = T{0};
     y = T{0};
     z = T{0};
@@ -127,52 +131,52 @@ std::ostream& operator<<(std::ostream& out, const Vec4<T>& v) {
 }
 
 template <numeric T>
-Vec4<T> operator+(const Vec4<T>& v1, const Vec4<T>& v2) {
+constexpr Vec4<T> operator+(const Vec4<T>& v1, const Vec4<T>& v2) {
   return Vec4<T>(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z, v1.w + v2.w);
 }
 
 template <numeric T>
-Vec4<T> operator+(const Vec4<T>& v, T num) {
+constexpr Vec4<T> operator+(const Vec4<T>& v, T num) {
   return Vec4<T>(v.x + num, v.y + num, v.z + num, v.w + num);
 }
 
 template <numeric T>
-Vec4<T> operator+(T num, const Vec4<T>& v) {
+constexpr Vec4<T> operator+(T num, const Vec4<T>& v) {
   return v + num;
 }
 
 template <numeric T>
-Vec4<T> operator-(const Vec4<T>& v1, const Vec4<T>& v2) {
+constexpr Vec4<T> operator-(const Vec4<T>& v1, const Vec4<T>& v2) {
   return Vec4<T>(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z, v1.w - v2.w);
 }
 
 template <numeric T>
-Vec4<T> operator-(const Vec4<T>& v, T num) {
+constexpr Vec4<T> operator-(const Vec4<T>& v, T num) {
   return Vec4<T>(v.x - num, v.y - num, v.z - num, v.w - num);
 }
 
 template <numeric T>
-Vec4<T> operator-(T num, const Vec4<T>& v) {
+constexpr Vec4<T> operator-(T num, const Vec4<T>& v) {
   return v - num;
 }
 
 template <numeric T>
-Vec4<T> operator*(const Vec4<T>& v1, const Vec4<T>& v2) {
+constexpr Vec4<T> operator*(const Vec4<T>& v1, const Vec4<T>& v2) {
   return Vec4<T>(v1.x * v2.x, v1.y * v2.y, v1.z * v2.z, v1.w * v2.w);
 }
 
 template <numeric T>
-Vec4<T> operator*(const Vec4<T>& v, T num) {
+constexpr Vec4<T> operator*(const Vec4<T>& v, T num) {
   return Vec4<T>(v.x * num, v.y * num, v.z * num, v.w * num);
 }
 
 template <numeric T>
-Vec4<T> operator*(T num, const Vec4<T>& v) {
+constexpr Vec4<T> operator*(T num, const Vec4<T>& v) {
   return v * num;
 }
 
 template <numeric T>
-Vec4<T> operator/(const Vec4<T>& v1, const Vec4<T>& v2) {
+constexpr Vec4<T> operator/(const Vec4<T>& v1, const Vec4<T>& v2) {
   if (v2.is_zero()) {
     throw std::runtime_error("Cannot divide by zero 4D vector");
   }
@@ -180,7 +184,7 @@ Vec4<T> operator/(const Vec4<T>& v1, const Vec4<T>& v2) {
 }
 
 template <numeric T>
-Vec4<T> operator/(const Vec4<T>& v, T num) {
+constexpr Vec4<T> operator/(const Vec4<T>& v, T num) {
   if (num == T{0}) {
     throw std::runtime_error("Cannot divide by zero number");
   }
@@ -188,13 +192,13 @@ Vec4<T> operator/(const Vec4<T>& v, T num) {
 }
 
 template <numeric T>
-auto dot(const Vec4<T>& v1, const Vec4<T>& v2) {
+constexpr auto dot(const Vec4<T>& v1, const Vec4<T>& v2) {
   Vec4<T> v = v1 * v2;
   return v.x + v.y + v.z + v.w;
 }
 
 template <numeric T>
-Vec4<T> normalized(const Vec4<T>& v) {
+constexpr Vec4<T> normalized(const Vec4<T>& v) {
   auto l = v.length();
   if (l < std::numeric_limits<double>::epsilon()) {
     l += static_cast<T>(1E-6);

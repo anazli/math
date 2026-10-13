@@ -19,32 +19,34 @@ class Point3;
 template <numeric T>
 class Normal3 {
  public:
-  Normal3() = default;
-  Normal3(T p1, T p2, T p3) : x{p1}, y{p2}, z{p3} {}
-  explicit Normal3(const Vec4<T>& v) : x{v.x}, y{v.y}, z{v.z} {}
-  explicit Normal3(const Point3<T>& p) : x{p.x}, y{p.y}, z{p.z} {}
-  explicit Normal3(const Vec3<T>& v) : x{v.x}, y{v.y}, z{v.z} {}
+  constexpr Normal3() = default;
+  constexpr Normal3(T p1, T p2, T p3) : x{p1}, y{p2}, z{p3} {}
+  constexpr explicit Normal3(const Vec4<T>& v) : x{v.x}, y{v.y}, z{v.z} {}
+  constexpr explicit Normal3(const Point3<T>& p) : x{p.x}, y{p.y}, z{p.z} {}
+  constexpr explicit Normal3(const Vec3<T>& v) : x{v.x}, y{v.y}, z{v.z} {}
 
-  void set(T n) { x = y = z = n; }
-  void set(T xVal, T yVal, T zVal) {
+  constexpr void set(T n) { x = y = z = n; }
+  constexpr void set(T xVal, T yVal, T zVal) {
     x = xVal;
     y = yVal;
     z = zVal;
   }
 
-  Normal3<T>& operator=(const Vec4<T>& v) {
+  constexpr Normal3<T>& operator=(const Vec4<T>& v) {
     x = v.x;
     y = v.y;
     z = v.z;
     return *this;
   }
 
-  auto operator<=>(const Normal3<T>&) const = default;
+  constexpr auto operator<=>(const Normal3<T>&) const = default;
 
-  Normal3<T> operator+() const { return Normal3<T>(x, y, z); };
-  Normal3<T> operator-() const { return Normal3<T>(-x, -y, -z); }
+  constexpr Normal3<T> operator+() const { return Normal3<T>(x, y, z); };
+  constexpr Normal3<T> operator-() const { return Normal3<T>(-x, -y, -z); }
 
-  auto length() const { return static_cast<T>(sqrt(x * x + y * y + z * z)); }
+  constexpr auto length() const {
+    return static_cast<T>(sqrt(x * x + y * y + z * z));
+  }
 
  public:
   T x = T{1};
@@ -79,101 +81,101 @@ inline std::ostream& operator<<(std::ostream& out, const Normal3<T>& n) {
 //----------------------------------------------
 
 template <numeric T>
-Normal3<T> operator+(const Normal3<T>& n1, const Normal3<T>& n2) {
+constexpr Normal3<T> operator+(const Normal3<T>& n1, const Normal3<T>& n2) {
   return Normal3<T>(n1.x + n2.x, n1.y + n2.y, n1.z + n2.z);
 }
 
 template <numeric T>
-Vec3<T> operator+(const Normal3<T>& n, const Vec3<T>& v) {
+constexpr Vec3<T> operator+(const Normal3<T>& n, const Vec3<T>& v) {
   return Vec3<T>(n.x + v.x, n.y + v.y, n.z + v.z);
 }
 
 template <numeric T>
-Vec3<T> operator+(const Vec3<T>& v, const Normal3<T>& n) {
+constexpr Vec3<T> operator+(const Vec3<T>& v, const Normal3<T>& n) {
   return n + v;
 }
 
 template <numeric T>
-Normal3<T> operator+(const Normal3<T>& n, T num) {
+constexpr Normal3<T> operator+(const Normal3<T>& n, T num) {
   return Normal3<T>(n.x + num, n.y + num, n.z + num);
 }
 
 template <numeric T>
-Normal3<T> operator+(T num, const Normal3<T>& v) {
+constexpr Normal3<T> operator+(T num, const Normal3<T>& v) {
   return v + num;
 }
 
 template <numeric T>
-Normal3<T> operator-(const Normal3<T>& n1, const Normal3<T>& n2) {
+constexpr Normal3<T> operator-(const Normal3<T>& n1, const Normal3<T>& n2) {
   return Normal3<T>(n1.x - n2.x, n1.y - n2.y, n1.z - n2.z);
 }
 
 template <numeric T>
-Normal3<T> operator-(const Normal3<T>& n, T num) {
+constexpr Normal3<T> operator-(const Normal3<T>& n, T num) {
   return Normal3<T>(n.x - num, n.y - num, n.z - num);
 }
 
 template <numeric T>
-Normal3<T> operator-(T num, const Normal3<T>& n) {
+constexpr Normal3<T> operator-(T num, const Normal3<T>& n) {
   return n - num;
 }
 
 template <numeric T>
-Normal3<T> operator*(const Normal3<T>& n1, const Normal3<T>& n2) {
+constexpr Normal3<T> operator*(const Normal3<T>& n1, const Normal3<T>& n2) {
   return Normal3<T>(n1.x * n2.x, n1.y * n2.y, n1.z * n2.z);
 }
 
 template <numeric T>
-Normal3<T> operator*(const Normal3<T>& n, const Vec3<T>& v) {
+constexpr Normal3<T> operator*(const Normal3<T>& n, const Vec3<T>& v) {
   return Normal3<T>(n.x * v.x, n.y * v.y, n.z * v.z);
 }
 
 template <numeric T>
-Normal3<T> operator*(const Vec3<T>& v, const Normal3<T>& n) {
+constexpr Normal3<T> operator*(const Vec3<T>& v, const Normal3<T>& n) {
   return n * v;
 }
 
 template <numeric T>
-Normal3<T> operator*(const Normal3<T>& n, T num) {
+constexpr Normal3<T> operator*(const Normal3<T>& n, T num) {
   return Normal3<T>(n.x * num, n.y * num, n.z * num);
 }
 
 template <numeric T>
-Normal3<T> operator*(T num, const Normal3<T>& n) {
+constexpr Normal3<T> operator*(T num, const Normal3<T>& n) {
   return n * num;
 }
 
 template <numeric T>
-Normal3<T> operator/(const Normal3<T>& n1, const Normal3<T>& n2) {
+constexpr Normal3<T> operator/(const Normal3<T>& n1, const Normal3<T>& n2) {
   auto d = n2 + static_cast<T>(1.E-30);
   return Normal3<T>(n1.x / d.x, n1.y / d.y, n1.z / d.z);
 }
 
 template <numeric T>
-Normal3<T> operator/(const Normal3<T>& n, T num) {
+constexpr Normal3<T> operator/(const Normal3<T>& n, T num) {
   num += 1.E-30;
   return Normal3<T>(n.x / num, n.y / num, n.z / num);
 }
 
 template <numeric T>
-T dot(const Normal3<T>& n1, const Normal3<T>& n2) {
+constexpr T dot(const Normal3<T>& n1, const Normal3<T>& n2) {
   Normal3<T> n = n1 * n2;
   return n.x + n.y + n.z;
 }
 
 template <numeric T>
-T dot(const Normal3<T>& n, const Vec3<T>& v) {
+constexpr T dot(const Normal3<T>& n, const Vec3<T>& v) {
   Normal3<T> u = n * v;
   return u.x + u.y + u.z;
 }
 
 template <numeric T>
-T dot(const Vec3<T>& v, const Normal3<T>& n) {
+constexpr T dot(const Vec3<T>& v, const Normal3<T>& n) {
   return dot(n, v);
 }
 
 template <numeric T>
-Normal3<T> normalized(const Normal3<T>& v) {
+constexpr Normal3<T> normalized(const Normal3<T>& v) {
   auto l = v.length();
   if (l < std::numeric_limits<double>::epsilon()) {
     throw std::runtime_error("Cannot normalize zero-length 3D normal");

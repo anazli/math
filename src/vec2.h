@@ -11,17 +11,17 @@
 template <numeric T>
 class Vec2 {
  public:
-  Vec2() = default;
-  Vec2(T p1, T p2) : x{p1}, y{p2} {}
+  constexpr Vec2() = default;
+  constexpr Vec2(T p1, T p2) : x{p1}, y{p2} {}
 
-  static Vec2<T> create_unit_vec() { return Vec2<T>(T{1}, T{1}); }
+  static constexpr Vec2<T> create_unit_vec() { return Vec2<T>(T{1}, T{1}); }
 
-  auto operator<=>(const Vec2<T>&) const = default;
+  constexpr auto operator<=>(const Vec2<T>&) const = default;
 
-  Vec2<T> operator+() const { return Vec2<T>(x, y); };
-  Vec2<T> operator-() const { return Vec2<T>(-x, -y); }
+  constexpr Vec2<T> operator+() const { return Vec2<T>(x, y); };
+  constexpr Vec2<T> operator-() const { return Vec2<T>(-x, -y); }
 
-  void normalize() {
+  constexpr void normalize() {
     auto l = length();
     if (l < std::numeric_limits<double>::epsilon()) {
       l += static_cast<T>(1E-6);
@@ -30,8 +30,8 @@ class Vec2 {
     y = static_cast<T>(y / l);
   }
 
-  auto length() const { return static_cast<T>(sqrt(x * x + y * y)); }
-  bool is_zero() const { return *this == Vec2<T>(T{0}, T{0}); }
+  constexpr auto length() const { return static_cast<T>(sqrt(x * x + y * y)); }
+  constexpr bool is_zero() const { return *this == Vec2<T>(T{0}, T{0}); }
 
  public:
   T x = T{0};
@@ -66,52 +66,52 @@ inline std::ostream& operator<<(std::ostream& out, const Vec2<T>& v) {
 //----------------------------------------------
 
 template <numeric T>
-Vec2<T> operator+(const Vec2<T>& v1, const Vec2<T>& v2) {
+constexpr Vec2<T> operator+(const Vec2<T>& v1, const Vec2<T>& v2) {
   return Vec2<T>(v1.x + v2.x, v1.y + v2.y);
 }
 
 template <numeric T>
-Vec2<T> operator+(const Vec2<T>& v, T num) {
+constexpr Vec2<T> operator+(const Vec2<T>& v, T num) {
   return Vec2<T>(v.x + num, v.y + num);
 }
 
 template <numeric T>
-Vec2<T> operator+(T num, const Vec2<T>& v) {
+constexpr Vec2<T> operator+(T num, const Vec2<T>& v) {
   return v + num;
 }
 
 template <numeric T>
-Vec2<T> operator-(const Vec2<T>& v1, const Vec2<T>& v2) {
+constexpr Vec2<T> operator-(const Vec2<T>& v1, const Vec2<T>& v2) {
   return Vec2<T>(v1.x - v2.x, v1.y - v2.y);
 }
 
 template <numeric T>
-Vec2<T> operator-(const Vec2<T>& v, T num) {
+constexpr Vec2<T> operator-(const Vec2<T>& v, T num) {
   return Vec2<T>(v.x - num, v.y - num);
 }
 
 template <numeric T>
-Vec2<T> operator-(T num, const Vec2<T>& v) {
+constexpr Vec2<T> operator-(T num, const Vec2<T>& v) {
   return v - num;
 }
 
 template <numeric T>
-Vec2<T> operator*(const Vec2<T>& v1, const Vec2<T>& v2) {
+constexpr Vec2<T> operator*(const Vec2<T>& v1, const Vec2<T>& v2) {
   return Vec2<T>(v1.x * v2.x, v1.y * v2.y);
 }
 
 template <numeric T>
-Vec2<T> operator*(const Vec2<T>& v, T num) {
+constexpr Vec2<T> operator*(const Vec2<T>& v, T num) {
   return Vec2<T>(v.x * num, v.y * num);
 }
 
 template <numeric T>
-Vec2<T> operator*(T num, const Vec2<T>& v) {
+constexpr Vec2<T> operator*(T num, const Vec2<T>& v) {
   return v * num;
 }
 
 template <numeric T>
-Vec2<T> operator/(const Vec2<T>& v1, const Vec2<T>& v2) {
+constexpr Vec2<T> operator/(const Vec2<T>& v1, const Vec2<T>& v2) {
   if (v2.is_zero()) {
     throw std::runtime_error("Cannot divide by zero 2D vector");
   }
@@ -119,7 +119,7 @@ Vec2<T> operator/(const Vec2<T>& v1, const Vec2<T>& v2) {
 }
 
 template <numeric T>
-Vec2<T> operator/(const Vec2<T>& v, T num) {
+constexpr Vec2<T> operator/(const Vec2<T>& v, T num) {
   if (num == T{0}) {
     throw std::runtime_error("Cannot divide by zero number");
   }
@@ -131,13 +131,13 @@ Vec2<T> operator/(const Vec2<T>& v, T num) {
 //--------------------------------------------
 
 template <numeric T>
-T dot(const Vec2<T>& v1, const Vec2<T>& v2) {
+constexpr T dot(const Vec2<T>& v1, const Vec2<T>& v2) {
   auto v = v1 * v2;
   return v.x + v.y;
 }
 
 template <numeric T>
-Vec2<T> normalized(const Vec2<T>& v) {
+constexpr Vec2<T> normalized(const Vec2<T>& v) {
   auto l = v.length();
   if (l < std::numeric_limits<double>::epsilon()) {
     l += static_cast<T>(1E-6);

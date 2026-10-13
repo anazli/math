@@ -5,22 +5,24 @@
 
 class Ray {
  public:
-  Ray() = default;
-  Ray(const Point3f &origin, const Vec3f &direction)
+  constexpr Ray() = default;
+  constexpr Ray(const Point3f &origin, const Vec3f &direction)
       : m_origin(origin), m_direction(direction) {}
 
-  void setOrigin(const Point3f &origin) { m_origin = origin; }
-  void setDirection(const Vec3f &direction) { m_direction = direction; }
-  Point3f origin() const { return m_origin; }
-  Vec3f direction() const { return m_direction; }
-  Point3f position(const float &parameter) const {
+  constexpr void setOrigin(const Point3f &origin) { m_origin = origin; }
+  constexpr void setDirection(const Vec3f &direction) {
+    m_direction = direction;
+  }
+  constexpr Point3f origin() const { return m_origin; }
+  constexpr Vec3f direction() const { return m_direction; }
+  constexpr Point3f position(const float &parameter) const {
     return origin() + parameter * direction();
   }
 
-  void setMinRange(float t) { m_min_parameter = t; }
-  float getMinRange() const { return m_min_parameter; }
-  void setMaxRange(float t) { m_max_parameter = t; }
-  float getMaxRange() const { return m_max_parameter; }
+  constexpr void setMinRange(float t) { m_min_parameter = t; }
+  constexpr float getMinRange() const { return m_min_parameter; }
+  constexpr void setMaxRange(float t) { m_max_parameter = t; }
+  constexpr float getMaxRange() const { return m_max_parameter; }
 
  private:
   Point3f m_origin;

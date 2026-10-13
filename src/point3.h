@@ -16,45 +16,49 @@ class Normal3;
 template <numeric T>
 class Point3 {
  public:
-  Point3() = default;
-  Point3(T x, T y, T z) : x{x}, y{y}, z{z} {}
-  explicit Point3(const Vec4<T> &v) : x{v.x}, y{v.y}, z{v.z} {}
-  explicit Point3(const Vec3<T> &v) : x{v.x}, y{v.y}, z{v.z} {}
-  explicit Point3(const Normal3<T> &n) : x{n.x}, y{n.y}, z{n.z} {}
+  constexpr Point3() = default;
+  constexpr Point3(T x, T y, T z) : x{x}, y{y}, z{z} {}
+  constexpr explicit Point3(const Vec4<T> &v) : x{v.x}, y{v.y}, z{v.z} {}
+  constexpr explicit Point3(const Vec3<T> &v) : x{v.x}, y{v.y}, z{v.z} {}
+  constexpr explicit Point3(const Normal3<T> &n) : x{n.x}, y{n.y}, z{n.z} {}
 
-  void set(T n) { x = y = z = n; }
-  void set(T xVal, T yVal, T zVal) {
+  constexpr void set(T n) { x = y = z = n; }
+  constexpr void set(T xVal, T yVal, T zVal) {
     x = xVal;
     y = yVal;
     z = zVal;
   }
 
-  Point3<T> &operator=(const Vec4<T> &vec4) {
+  constexpr Point3<T> &operator=(const Vec4<T> &vec4) {
     x = vec4.x;
     y = vec4.y;
     z = vec4.z;
     return *this;
   }
 
-  auto operator<=>(const Point3<T> &) const = default;
+  constexpr auto operator<=>(const Point3<T> &) const = default;
 
-  Point3<T> operator+(const Vec3<T> &v) const {
+  constexpr Point3<T> operator+(const Vec3<T> &v) const {
     return Point3<T>(x + v.x, y + v.y, z + v.z);
   }
 
-  Vec3<T> operator+(const Point3<T> &p) const {
+  constexpr Vec3<T> operator+(const Point3<T> &p) const {
     return Vec3<T>(x + p.x, y + p.y, z + p.z);
   }
 
-  Point3<T> operator-(const Vec3<T> &v) const {  // Point - Vector = Point
+  constexpr Point3<T> operator-(
+      const Vec3<T> &v) const {  // Point - Vector = Point
     return Point3<T>(x - v.x, y - v.y, z - v.z);
   }
 
-  Vec3<T> operator-(const Point3<T> &p) const {  // Point - Point = Vector
+  constexpr Vec3<T> operator-(
+      const Point3<T> &p) const {  // Point - Point = Vector
     return Vec3<T>(x - p.x, y - p.y, z - p.z);
   }
 
-  bool is_zero() const { return *this == Point3<T>(T{0}, T{0}, T{0}); }
+  constexpr bool is_zero() const {
+    return *this == Point3<T>(T{0}, T{0}, T{0});
+  }
 
  public:
   T x = T{0};
@@ -87,26 +91,26 @@ std::ostream &operator<<(std::ostream &out, const Point3<T> &p) {
 //----------------------------------------------
 
 template <numeric T>
-Vec3<T> operator-(const Vec3<T> &v, const Point3<T> &p) {
+constexpr Vec3<T> operator-(const Vec3<T> &v, const Point3<T> &p) {
   return Vec3<T>(v.x - p.x, v.y - p.y, v.z - p.z);
 }
 
 template <numeric T>
-Vec3<T> operator+(const Vec3<T> &v, const Point3<T> &p) {
+constexpr Vec3<T> operator+(const Vec3<T> &v, const Point3<T> &p) {
   return Vec3<T>(v.x + p.x, v.y + p.y, v.z + p.z);
 }
 
 template <numeric T>
-Point3<T> operator+(const Point3<T> &p, T num) {
+constexpr Point3<T> operator+(const Point3<T> &p, T num) {
   return Point3<T>(p.x + num, p.y + num, p.z + num);
 }
 
 template <numeric T>
-Point3<T> operator*(const Point3<T> &p, T num) {
+constexpr Point3<T> operator*(const Point3<T> &p, T num) {
   return Point3<T>(p.x * num, p.y * num, p.z * num);
 }
 
 template <numeric T>
-Point3<T> operator*(T num, const Point3<T> &p) {
+constexpr Point3<T> operator*(T num, const Point3<T> &p) {
   return p * num;
 }

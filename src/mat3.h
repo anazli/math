@@ -23,7 +23,7 @@ class Mat3 {
   // Column 3: data[12..15]=unused
   alignas(16) T data[16];
 
-  Mat3() {
+  constexpr Mat3() {
     // Initialize to identity matrix
     for (int i = 0; i < 16; ++i) data[i] = T{0};
     data[0] = T{1};
@@ -31,13 +31,14 @@ class Mat3 {
     data[10] = T{1};
   }
 
-  Mat3(T num) {
+  constexpr Mat3(T num) {
     for (int i = 0; i < 16; ++i) {
       data[i] = (i % 4 == 3 || i >= 12) ? T{0} : num;
     }
   }
 
-  Mat3(const Vec3<T>& row0, const Vec3<T>& row1, const Vec3<T>& row2) {
+  constexpr Mat3(const Vec3<T>& row0, const Vec3<T>& row1,
+                 const Vec3<T>& row2) {
     for (int i = 0; i < 16; ++i) data[i] = T{0};
     data[0] = row0.x;
     data[1] = row1.x;
@@ -51,41 +52,41 @@ class Mat3 {
   }
 
   // Get element at (row, col) - only for 0..2 range
-  T get(int row, int col) const {
+  constexpr T get(int row, int col) const {
     assert(row >= 0 && row < 3 && col >= 0 && col < 3);
     return data[col * 4 + row];
   }
 
   // Set element at (row, col) - only for 0..2 range
-  void set(int row, int col, T val) {
+  constexpr void set(int row, int col, T val) {
     assert(row >= 0 && row < 3 && col >= 0 && col < 3);
     data[col * 4 + row] = val;
   }
 
   // Return row as Vec3
-  Vec3<T> operator[](int i) const {
+  constexpr Vec3<T> operator[](int i) const {
     assert(i >= 0 && i <= 2);
     return Vec3<T>(data[i], data[4 + i], data[8 + i]);
   }
 
-  T trace() const;
+  constexpr T trace() const;
 
-  void zero() {
+  constexpr void zero() {
     for (int i = 0; i < 16; ++i) data[i] = T{0};
   }
 
-  void identity() {
+  constexpr void identity() {
     for (int i = 0; i < 16; ++i) data[i] = T{0};
     data[0] = T{1};
     data[5] = T{1};
     data[10] = T{1};
   }
 
-  T determinant() const;
-  Mat2<T> minor(int i, int j) const;
-  Mat3<T> inverse() const;
-  Mat3<T> transpose() const;
-  T coFactor(int i, int j) const {
+  constexpr T determinant() const;
+  constexpr Mat2<T> minor(int i, int j) const;
+  constexpr Mat3<T> inverse() const;
+  constexpr Mat3<T> transpose() const;
+  constexpr T coFactor(int i, int j) const {
     T sign = ((i + j) % 2 == 0) ? T{1} : T{-1};
     return sign * minor(i, j).determinant();
   }
@@ -94,12 +95,12 @@ class Mat3 {
 using Mat3D = Mat3<float>;
 
 template <numeric T>
-T Mat3<T>::trace() const {
+constexpr T Mat3<T>::trace() const {
   return data[0] + data[5] + data[10];
 }
 
 template <numeric T>
-T Mat3<T>::determinant() const {
+constexpr T Mat3<T>::determinant() const {
   // Using 3x3 submatrix of padded layout
   T r1 = data[0] * (data[5] * data[10] - data[6] * data[9]);
   T r2 = data[1] * (data[4] * data[10] - data[6] * data[8]);
@@ -108,7 +109,7 @@ T Mat3<T>::determinant() const {
 }
 
 template <numeric T>
-Mat2<T> Mat3<T>::minor(int i, int j) const {
+constexpr Mat2<T> Mat3<T>::minor(int i, int j) const {
   Mat2<T> mi;
   int rr = 0;
   for (int row = 0; row < 3; ++row) {
@@ -125,7 +126,7 @@ Mat2<T> Mat3<T>::minor(int i, int j) const {
 }
 
 template <numeric T>
-Mat3<T> Mat3<T>::inverse() const {
+constexpr Mat3<T> Mat3<T>::inverse() const {
   Mat3<T> inv;
   for (int i = 0; i < 3; ++i) {
     for (int j = 0; j < 3; ++j) {
@@ -140,7 +141,7 @@ Mat3<T> Mat3<T>::inverse() const {
 }
 
 template <numeric T>
-Mat3<T> Mat3<T>::transpose() const {
+constexpr Mat3<T> Mat3<T>::transpose() const {
   Mat3<T> ret;
   ret.set(0, 0, get(0, 0));
   ret.set(1, 0, get(0, 1));
@@ -158,35 +159,35 @@ Mat3<T> Mat3<T>::transpose() const {
 }
 
 template <numeric T>
-Mat3<T> operator+(const Mat3<T>& m1, const Mat3<T>& m2) {
+constexpr Mat3<T> operator+(const Mat3<T>& m1, const Mat3<T>& m2) {
   Mat3<T> ret;
   for (int i = 0; i < 12; ++i) ret.data[i] = m1.data[i] + m2.data[i];
   return ret;
 }
 
 template <numeric T>
-Mat3<T> operator+(const Mat3<T>& m1, T num) {
+constexpr Mat3<T> operator+(const Mat3<T>& m1, T num) {
   Mat3<T> ret;
   for (int i = 0; i < 12; ++i) ret.data[i] = m1.data[i] + num;
   return ret;
 }
 
 template <numeric T>
-Mat3<T> operator-(const Mat3<T>& m1, const Mat3<T>& m2) {
+constexpr Mat3<T> operator-(const Mat3<T>& m1, const Mat3<T>& m2) {
   Mat3<T> ret;
   for (int i = 0; i < 12; ++i) ret.data[i] = m1.data[i] - m2.data[i];
   return ret;
 }
 
 template <numeric T>
-Mat3<T> operator-(const Mat3<T>& m1, T num) {
+constexpr Mat3<T> operator-(const Mat3<T>& m1, T num) {
   Mat3<T> ret;
   for (int i = 0; i < 12; ++i) ret.data[i] = m1.data[i] - num;
   return ret;
 }
 
 template <numeric T>
-Mat3<T> operator*(const Mat3<T>& m1, const Mat3<T>& m2) {
+constexpr Mat3<T> operator*(const Mat3<T>& m1, const Mat3<T>& m2) {
   Mat3<T> ret;
 
   // Column-major matrix multiplication
@@ -204,7 +205,7 @@ Mat3<T> operator*(const Mat3<T>& m1, const Mat3<T>& m2) {
 }
 
 template <numeric T>
-Mat3<T> operator*(const Mat3<T>& m1, T num) {
+constexpr Mat3<T> operator*(const Mat3<T>& m1, T num) {
   Mat3<T> ret;
   for (int i = 0; i < 16; ++i) ret.data[i] = m1.data[i] * num;
   return ret;
