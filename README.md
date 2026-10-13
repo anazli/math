@@ -15,6 +15,10 @@ Building and Running the tests
 ------------------------------
 ```bash
 cmake -B build -DENABLE_TESTING=ON
+```
+```bash
 cmake --build build
+```
+```bash
 ctest --test-dir build
 ```
