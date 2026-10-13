@@ -20,34 +20,32 @@ class Vector2Test : public testing::Test {
 TEST_F(Vector2Test, CreatesVector) { ASSERT_THAT(v, Eq(Vec2f(0.f, 0.f))); }
 
 TEST_F(Vector2Test, AsignsNegative) {
-  auto n = -1.55f;
-  v.x = n;
-  v.y = n;
-  v = -v;
-  ASSERT_THAT(v, Eq(Vec2f(-n, -n)));
+  constexpr auto n = -1.55f;
+  constexpr auto result = -Vec2f(n, n);
+  ASSERT_THAT(result, Eq(Vec2f(-n, -n)));
 }
 
 TEST_F(Vector2Test, AddsVectorOrNumber) {
-  v = v + 4.46f;
-  EXPECT_THAT(v, Eq(Vec2f(4.46f, 4.46f)));
+  constexpr auto v1 = Vec2f{} + 4.46f;
+  constexpr auto v2 = v1 + Vec2f(4.f, 6.f);
+  EXPECT_THAT(v1, Eq(Vec2f(4.46f, 4.46f)));
 
-  v = v + Vec2f(4.f, 6.f);
-  ASSERT_THAT(v, Eq(Vec2f(8.46f, 10.46f)));
+  ASSERT_THAT(v2, Eq(Vec2f(8.46f, 10.46f)));
 }
 
 TEST_F(Vector2Test, SubtractsVectorOrNumber) {
-  auto n = 4.46f;
-  v = v - n;
-  EXPECT_THAT(v, Eq(Vec2f(-n, -n)));
+  constexpr auto n = 4.46f;
+  constexpr auto v1 = Vec2f{} - n;
+  constexpr auto v2 = v1 - Vec2f(4.f, 6.f);
+  EXPECT_THAT(v1, Eq(Vec2f(-n, -n)));
 
-  v = v - Vec2f(4.f, 6.f);
-  ASSERT_THAT(v, Eq(Vec2f(-8.46f, -10.46f)));
+  ASSERT_THAT(v2, Eq(Vec2f(-8.46f, -10.46f)));
 }
 
 TEST_F(Vector2Test, GetsLenghtOfVector) {
-  auto v1 = Vec2f::create_unit_vec();
-  auto v2 = Vec2f(3.f, 3.f);
-  auto v3 = Vec2f(-5.f, -5.f);
+  constexpr auto v1 = Vec2f::create_unit_vec();
+  constexpr auto v2 = Vec2f(3.f, 3.f);
+  constexpr auto v3 = Vec2f(-5.f, -5.f);
 
   EXPECT_THAT(v.length(), FloatEq(0.f));
   EXPECT_THAT(v1.length(), FloatNear(static_cast<float>(sqrt(2.)), eps));
@@ -56,9 +54,8 @@ TEST_F(Vector2Test, GetsLenghtOfVector) {
 }
 
 TEST_F(Vector2Test, MultipliesVectorWithNumber) {
-  v = Vec2f(1.f, 0.f);
-  v = v * 5.f;
-  ASSERT_THAT(v, Eq(Vec2f(5.f, 0.f)));
+  constexpr auto result = Vec2f(1.f, 0.f) * 5.f;
+  ASSERT_THAT(result, Eq(Vec2f(5.f, 0.f)));
 }
 
 TEST_F(Vector2Test, NormalizesVector) {
@@ -68,10 +65,10 @@ TEST_F(Vector2Test, NormalizesVector) {
 }
 
 TEST_F(Vector2Test, DotProduct) {
-  v = Vec2f(3.f, 3.f);
-  EXPECT_THAT(dot(v, Vec2f(3.f, 3.f)), FloatEq(18.f));
-  v = Vec2f(-1.f, 5.f);
-  ASSERT_THAT(dot(v, Vec2f(-3.f, 3.f)), FloatEq(18.f));
+  constexpr auto result1 = dot(Vec2f(3.f, 3.f), Vec2f(3.f, 3.f));
+  constexpr auto result2 = dot(Vec2f(-1.f, 5.f), Vec2f(-3.f, 3.f));
+  EXPECT_THAT(result1, FloatEq(18.f));
+  ASSERT_THAT(result2, FloatEq(18.f));
 }
 
 TEST_F(Vector2Test, ReturnsNormalizedVectorOfInput) {
@@ -81,25 +78,21 @@ TEST_F(Vector2Test, ReturnsNormalizedVectorOfInput) {
 }
 
 TEST_F(Vector2Test, AddsTwoVectors) {
-  v = Vec2f(4.532f, 45.67f);
-  v = v + Vec2f(0.3456f, 124.67f);
-  ASSERT_THAT(v, Eq(Vec2f(4.8776f, 170.34f)));
+  constexpr auto result = Vec2f(4.532f, 45.67f) + Vec2f(0.3456f, 124.67f);
+  ASSERT_THAT(result, Eq(Vec2f(4.8776f, 170.34f)));
 }
 
 TEST_F(Vector2Test, SubtractsTwoVectors) {
-  v = Vec2f(40.54f, 2.4f);
-  v = v - Vec2f(4.20f, -1.7f);
-  ASSERT_THAT(v, Vec2Near(Vec2f(36.34f, 4.1f), eps));
+  constexpr auto result = Vec2f(40.54f, 2.4f) - Vec2f(4.20f, -1.7f);
+  ASSERT_THAT(result, Vec2Near(Vec2f(36.34f, 4.1f), eps));
 }
 
 TEST_F(Vector2Test, DevidesVectorByNumber) {
-  v = Vec2f(36.6f, -30.6f);
-  v = v / 3.f;
-  ASSERT_THAT(v, Eq(Vec2f(36.6f / 3.f, -30.6f / 3.f)));
+  constexpr auto result = Vec2f(36.6f, -30.6f) / 3.f;
+  ASSERT_THAT(result, Eq(Vec2f(36.6f / 3.f, -30.6f / 3.f)));
 }
 
 TEST_F(Vector2Test, DevidesVectorByVector) {
-  v = Vec2f(434.5f, 93.5f);
-  v = v / Vec2f(32.5f, -16.2f);
-  ASSERT_THAT(v, Eq(Vec2f(434.5f / 32.5f, -93.5f / 16.2f)));
+  constexpr auto result = Vec2f(434.5f, 93.5f) / Vec2f(32.5f, -16.2f);
+  ASSERT_THAT(result, Eq(Vec2f(434.5f / 32.5f, -93.5f / 16.2f)));
 }
